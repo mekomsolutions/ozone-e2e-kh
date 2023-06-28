@@ -84,7 +84,7 @@ export class HomePage {
   }
 
   async deletePatient(){
-    await this.page.goto('https://oz-kh-uat.mekomsolutions.net/openmrs/admin/patients/index.htm');
+    await this.page.goto(`${process.env.E2E_BASE_URL}/openmrs/admin/patients/index.htm`);
     await this.page.getByPlaceholder(' ').type(`${patientFullName}`);
     await this.page.locator('#openmrsSearchTable tbody tr.odd td:nth-child(1)').click();
     await this.page.locator('input[name="voidReason"]').fill('Delete patient created by smoke tests');

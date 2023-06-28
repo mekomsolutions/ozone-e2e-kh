@@ -1,4 +1,4 @@
-# KH E2E Tests
+# E2E Test Suite for the Cambodia Ozone Distribution.
 
 [![KH E2E Tests](https://github.com/mekomsolutions/ozone-e2e-kh/actions/workflows/e2e.yml/badge.svg)](https://github.com/mekomsolutions/ozone-e2e-kh/actions/workflows/e2e.yml)
 
@@ -44,7 +44,7 @@ npm run smokeTests
 This is underdevelopement/WIP. At the moment, there exists a git-shared
 `.env` file which can be used for configuring certain test attributes.
 
-By default, the test suite will run against the Ozone demo server.
+By default, the test suite will run against the kh uat server.
 You can override this by changing the `E2E_BASE_URL` environment variables beforehand:
 
 ```sh
