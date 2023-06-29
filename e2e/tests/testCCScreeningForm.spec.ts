@@ -15,19 +15,19 @@ test.beforeEach(async ({ page }) =>  {
 });
 
 test('cc screening form should dispaly form sections and submit form properly', async ({ page }) => {
+  // set up
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await page.waitForTimeout(3000)
-
-  // check availability of CC Screening form
   const cCScreeningForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
   await expect(cCScreeningForm?.includes('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
   await expect(page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeVisible();
-  
-  // display form sections
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click({ force: true });
+  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').dispatchEvent('click');
 
+  // verify
   const reproductiveHistorySection = await page.locator('div.tab button:nth-child(1) span').textContent();
   await expect(reproductiveHistorySection?.includes('ប្រវត្តិបន្តពូជ')).toBeTruthy();
 
@@ -40,7 +40,6 @@ test('cc screening form should dispaly form sections and submit form properly', 
   const cervicalCancerSection = await page.locator('div.tab button:nth-child(4) span').textContent();
   await expect(cervicalCancerSection?.includes('ជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
 
-  // submit form properly
   await page.locator('#sexDebutid').clear();
   await page.locator('#sexDebutid').type('20');
   await page.locator('#previousPregnancyid_1').check();

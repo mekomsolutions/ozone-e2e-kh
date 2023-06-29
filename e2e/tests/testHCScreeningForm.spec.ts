@@ -15,19 +15,19 @@ test.beforeEach(async ({ page }) =>  {
 });
 
 test('hc screening form should dispaly form sections and submit form properly', async ({ page }) => {
+  // set up
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await page.waitForTimeout(3000);
-
-  // check availability of HC Screening form
   const hCScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
   await expect(hCScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
   await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
+  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').dispatchEvent('click');
 
-  // display form sections
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click({ force: true });
-
+  // verify
   const medicalHistorySection = await page.locator('div.tab button:nth-child(1) span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
 
@@ -43,7 +43,6 @@ test('hc screening form should dispaly form sections and submit form properly', 
   const managementSection = await page.locator('div.tab button:nth-child(5) span').textContent();
   await expect(managementSection?.includes('ការគ្រប់គ្រង')).toBeTruthy();
 
-  // submit the form properly
   await page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
   await page.getByLabel('មិនដែលជក់បារីទេ').check();
   await page.locator('#exerciseid_0').check();

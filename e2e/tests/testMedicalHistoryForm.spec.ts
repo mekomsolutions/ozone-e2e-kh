@@ -15,26 +15,24 @@ test.beforeEach(async ({ page }) =>  {
 });
 
 test('medical history form should dispaly form sections and submit form properly', async ({ page }) => {
+  // set up
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await page.waitForTimeout(3000)
-
-  // check availability of Medical History form
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
+  await page.getByText('ប្រវត្តជំងឺ').dispatchEvent('click');
 
-  // display form sections
-  await page.getByText('ប្រវត្តជំងឺ').click({ force: true });
-
+  // verify
   const generalSection = await page.locator('div.tab button:nth-child(1) span').textContent();
   await expect(generalSection?.includes('ទូទៅ')).toBeTruthy();
 
   const medicalHistorySection = await page.locator('div.tab button:nth-child(2) span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
-
-  // submit the form properly
   await page.getByRole('button', { name: 'ប្រវត្តិជំងឺ' }).click();
   await page.locator('#diagnosedForDMid_1').check();
   await page.getByRole('radio', { name: 'មិនដឹង' }).check();

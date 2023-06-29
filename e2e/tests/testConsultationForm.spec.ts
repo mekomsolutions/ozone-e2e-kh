@@ -15,19 +15,19 @@ test.beforeEach(async ({ page }) =>  {
 });
 
 test('consultation form should dispaly form sections and submit from properly', async ({ page }) => {
+  // set up
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await page.waitForTimeout(3000)
-
-  // check availability of NCD Consultation form
   const consultationForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
   await expect(consultationForm?.includes('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeTruthy();
   await expect(page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeVisible();
+  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').dispatchEvent('click');
 
-  // display form sections
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click({ force: true });
-
+  // verify
   const medicalAssessmentSection = await page.locator('div.tab button:nth-child(1) span').textContent();
   await expect(medicalAssessmentSection?.includes('ការវាយតម្លៃវេជ្ជសាស្រ្ត')).toBeTruthy();
 
@@ -46,7 +46,6 @@ test('consultation form should dispaly form sections and submit from properly', 
   const referralSection = await page.locator('div.tab button:nth-child(6) span').textContent();
   await expect(referralSection?.includes('បញ្ជូន')).toBeTruthy();
 
-  // submit form properly
   await page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
   await page.getByLabel('មិនដែលជក់បារីទេ').check();
   await page.locator('#exerciseid_1').check();
