@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) =>  {
     await homePage.startPatientVisit();
 });
 
-test('consultation form should  dispaly sections and submit from properly', async ({ page }) => {
+test('consultation form should dispaly form sections and submit from properly', async ({ page }) => {
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();

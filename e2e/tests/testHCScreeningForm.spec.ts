@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) =>  {
     await homePage.startPatientVisit();
 });
 
-test('hc screening form should  dispaly sections and submit form properly', async ({ page }) => {
+test('hc screening form should dispaly form sections and submit form properly', async ({ page }) => {
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
