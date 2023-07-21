@@ -7,7 +7,7 @@ export var patientName = {
 
 var patientFullName = '';
 
-const delay = (mills) => {
+export const delay = (mills) => {
   let datetime1 = new Date().getTime();
   let datetime2 = datetime1 + mills;
   while(datetime1 < datetime2) {
@@ -32,6 +32,7 @@ export class HomePage {
     await this.page.getByRole('button', { name: 'Confirm' }).click();
     await this.page.getByRole('button', { name: 'Users' }).click();
     await this.page.getByRole('combobox', { name: 'Select locale' }).selectOption('km');
+    delay(6000)
   }
 
   async createPatient() {
@@ -95,7 +96,6 @@ export class HomePage {
 
     const message = await this.page.locator('//*[@id="patientFormVoided"]').textContent();
     expect(message?.includes('This patient has been deleted')).toBeTruthy();
-
     await this.page.getByRole('link', { name: 'Log out' }).click();
   }
 

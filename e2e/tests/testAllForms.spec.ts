@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
 import { patientName } from '../utils/functions/testBase';
+import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
@@ -21,7 +22,7 @@ test('All the forms should load on the patient chart', async ({ page }) => {
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
-  await page.waitForTimeout(1000);
+  await delay(4000);
 
   // verify
   const ccScreeningForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
@@ -39,6 +40,7 @@ test('All the forms should load on the patient chart', async ({ page }) => {
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
+  await page.getByRole('button', { name: 'បិទ' }).click();
 });
 
 test.afterEach(async ( {page}) =>  {

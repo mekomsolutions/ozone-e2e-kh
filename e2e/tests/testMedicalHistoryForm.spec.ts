@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
 import { patientName } from '../utils/functions/testBase';
+import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
@@ -21,11 +22,12 @@ test('medical history form should dispaly form sections and submit form properly
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
-  await page.waitForTimeout(3000)
+  await delay(4000);
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
-  await page.getByText('ប្រវត្តជំងឺ').dispatchEvent('click');
+  await page.getByText('ប្រវត្តជំងឺ').click();
+  await delay(3000);
 
   // verify
   const generalSection = await page.locator('div.tab button:nth-child(1) span').textContent();
@@ -42,6 +44,7 @@ test('medical history form should dispaly form sections and submit form properly
   await page.locator('#presenceOfAllergiesid_1').check();
   await page.getByRole('button', { name: 'Save and close' }).click();
   await expect(page.getByText('The form has been submitted successfully.')).toBeVisible();
+  await page.getByRole('button', { name: 'បិទ' }).click();
 });
 
 test.afterEach(async ( {page}) =>  {
