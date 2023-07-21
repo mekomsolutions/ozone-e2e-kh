@@ -1,6 +1,8 @@
 name: KH E2E Tests
 
 on:
+  schedule:
+    - cron: "0 0 * * *"
   push:
     branches: [main]
   pull_request:
@@ -34,3 +36,11 @@ jobs:
 
       - name: Run E2E tests
         run: npm run smokeTests
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

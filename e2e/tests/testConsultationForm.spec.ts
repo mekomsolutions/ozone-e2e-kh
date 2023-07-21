@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
 import { patientName } from '../utils/functions/testBase';
+import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
@@ -21,11 +22,12 @@ test('consultation form should dispaly form sections and submit from properly', 
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
-  await page.waitForTimeout(3000)
+  await delay(4000);
   const consultationForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
   await expect(consultationForm?.includes('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeTruthy();
   await expect(page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeVisible();
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').dispatchEvent('click');
+  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await delay(3000);
 
   // verify
   const medicalAssessmentSection = await page.locator('div.tab button:nth-child(1) span').textContent();
@@ -52,6 +54,7 @@ test('consultation form should dispaly form sections and submit from properly', 
   await page.locator('#drinkAlcoholid_1').check();
   await page.getByRole('button', { name: 'Save and close' }).click();
   await expect(page.getByText('The form has been submitted successfully.')).toBeVisible();
+  await page.getByRole('button', { name: 'បិទ' }).click();
 });
 
 test.afterEach(async ( {page}) =>  {

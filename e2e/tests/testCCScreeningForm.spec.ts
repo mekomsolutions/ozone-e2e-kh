@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
 import { patientName } from '../utils/functions/testBase';
+import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
@@ -21,11 +22,12 @@ test('cc screening form should dispaly form sections and submit form properly', 
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
-  await page.waitForTimeout(3000)
+  await delay(4000);
   const ccScreeningForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
   await expect(ccScreeningForm?.includes('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
   await expect(page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeVisible();
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').dispatchEvent('click');
+  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
+  await delay(3000);
 
   // verify
   const reproductiveHistorySection = await page.locator('div.tab button:nth-child(1) span').textContent();
@@ -49,6 +51,7 @@ test('cc screening form should dispaly form sections and submit form properly', 
   await page.locator('#usingFPid_1').check();
   await page.getByRole('button', { name: 'Save and close' }).click();
   await expect(page.getByText('The form has been submitted successfully.')).toBeVisible();
+  await page.getByRole('button', { name: 'បិទ' }).click();
 });
 
 test.afterEach(async ( {page}) =>  {
