@@ -30,16 +30,6 @@ export class HomePage {
     await this.page.getByRole('button', { name: 'ឡកចូលក្នុងប្រព័ន្ធ' }).click();
     await this.page.locator('label').filter({ hasText: '100102. ចំបក់_HC' }).locator('span').first().click();
     await this.page.getByRole('button', { name: 'បញ្ជាក់' }).click();
-
-    // if(await this.page.getByLabel('Username').isVisible()){
-    //   await this.page.getByLabel('Username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
-    //   await this.page.getByRole('button', { name: 'Continue' }).click();
-    //   await this.page.getByLabel('Password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
-    //   await this.page.getByRole('button', { name: 'Log in' }).click();
-    //   await this.page.locator('label').filter({ hasText: '100102. Chambak_HC' }).locator('span').first().click();
-    // await this.page.getByRole('button', { name: 'Confirm' }).click();
-    // };
-
     delay(5000);
     await this.page.getByRole('button', { name: 'Users' }).click();
     await this.page.getByRole('combobox', { name: 'Select locale' }).selectOption('km');
