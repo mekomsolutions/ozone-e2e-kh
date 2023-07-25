@@ -16,7 +16,7 @@ test.beforeEach(async ({ page }) =>  {
 });
 
 test('CC Screening form should load all the form sections', async ({ page }) => {
-  // set up
+  // setup
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
 
