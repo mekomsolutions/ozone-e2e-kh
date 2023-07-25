@@ -15,8 +15,8 @@ test.beforeEach(async ({ page }) =>  {
     await homePage.startPatientVisit();
 });
 
-test('medical history form should dispaly form sections and submit form properly', async ({ page }) => {
-  // set up
+test('NCD Medical history form should load all form sections', async ({ page }) => {
+  // setup
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
 
@@ -26,21 +26,35 @@ test('medical history form should dispaly form sections and submit form properly
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
-  await page.getByText('ប្រវត្តជំងឺ').click();
-  await delay(3000);
 
   // verify
-  const generalSection = await page.locator('div.tab button:nth-child(1) span').textContent();
-  await expect(generalSection?.includes('ទូទៅ')).toBeTruthy();
-
-  const medicalHistorySection = await page.locator('div.tab button:nth-child(2) span').textContent();
+  await page.getByText('ប្រវត្តជំងឺ').click();
+  await delay(3000);
+  const medicalHistorySection = await page.locator('ofe-form-renderer div button').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
-  await page.getByRole('button', { name: 'ប្រវត្តិជំងឺ' }).click();
+  await page.getByRole('button', { name: 'បិទ' }).click();
+});
+
+test('NCD Medical history form should submit user input successfully', async ({ page }) => {
+  // setup
+  const homePage = new HomePage(page);
+  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
+  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await delay(4000);
+  const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
+  await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
+
+  // verify
+  await page.getByText('ប្រវត្តជំងឺ').click();
+  await delay(3000);
   await page.locator('#diagnosedForDMid_1').check();
-  await page.getByRole('radio', { name: 'មិនដឹង' }).check();
-  await page.locator('#prematureHeartOrStrokeDiseaseid_1').check();
-  await page.locator('#diabetesOrKidneyDiseaseid_1').check();
-  await page.locator('#traditionmedicineUseid_0').check();
+  await page.locator('#HighBloodPressureSxid_1').check();
+  await page.locator('#prematureHeartOrStrokeDiseaseid_0').check();
+  await page.locator('#diabetesOrKidneyDiseaseid_0').check();
+  await page.locator('#traditionmedicineUseid_1').check();
   await page.locator('#presenceOfAllergiesid_1').check();
   await page.getByRole('button', { name: 'Save and close' }).click();
   await expect(page.getByText('The form has been submitted successfully.')).toBeVisible();

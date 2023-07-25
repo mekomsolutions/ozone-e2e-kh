@@ -15,8 +15,8 @@ test.beforeEach(async ({ page }) =>  {
     await homePage.startPatientVisit();
 });
 
-test('All the forms should load on the patient chart', async ({ page }) => {
-  // set up
+test('All the forms should load on the patient chart page', async ({ page }) => {
+  // setup
   const homePage = new HomePage(page);
   homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
 
