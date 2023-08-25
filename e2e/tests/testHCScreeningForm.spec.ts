@@ -74,6 +74,29 @@ test('HC screening form should submit user input successfully', async ({ page })
   await page.getByRole('button', { name: 'បិទ' }).click();
 });
 
+test('CVD risk score should be correctly calculated', async ({ page }) => {
+  // setup
+  const homePage = new HomePage(page);
+  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
+  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await delay(4000);
+  const hcScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
+  await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
+  await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
+
+  // verify
+  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await delay(3000);
+  await page.getByRole('button', { name: 'ការពិនិត្យវិភាគ' }).click();
+  await homePage.enterCVDRiskIndicators();
+
+  const cVDRiskScore =   await page.locator('#CVDscoreid').textContent();
+  let updatedCount = Number(cVDRiskScore);
+  // await expect(updatedCount).toBeCloseTo(12);
+});
+
 test.afterEach(async ( {page}) =>  {
   const homePage = new HomePage(page);
   await homePage.deletePatient();

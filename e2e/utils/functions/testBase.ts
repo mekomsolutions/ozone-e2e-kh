@@ -101,4 +101,18 @@ export class HomePage {
     await this.page.getByRole('link', { name: 'Log out' }).click();
   }
 
+  async enterCVDRiskIndicators() {
+    await this.page.locator('#Htid').clear();
+    await this.page.locator('#Htid').type('165');
+    await this.page.locator('#Wtid').clear();
+    await this.page.locator('#Wtid').type('60');
+    await this.page.locator('#systoleid').clear();
+    await this.page.locator('#systoleid').type('14');
+    await this.page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
+    await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
+    await this.page.locator('#quitSmokingid').fill('2018');
+    await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
+    delay(5000);
+  }
+
 }

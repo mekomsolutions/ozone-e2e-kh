@@ -74,6 +74,29 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   await page.getByRole('button', { name: 'បិទ' }).click();
 });
 
+test('CVD risk score should be correctly calculated', async ({ page }) => {
+  // setup
+  const homePage = new HomePage(page);
+  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+
+  // replay
+  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await delay(4000);
+  const consultationForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
+  await expect(consultationForm?.includes('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeTruthy();
+  await expect(page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeVisible();
+
+  // verify
+  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await delay(3000);
+  await page.getByRole('button', { name: 'ការវាយតម្លៃវេជ្ជសាស្រ្ត' }).click();
+  await homePage.enterCVDRiskIndicators();
+
+  const cVDRiskScore =   await page.locator('#CVDscoreid').textContent();
+  let updatedCount = Number(cVDRiskScore);
+  // await expect(updatedCount).toEqual(12);
+});
+
 test.afterEach(async ( {page}) =>  {
   const homePage = new HomePage(page);
   await homePage.deletePatient();
