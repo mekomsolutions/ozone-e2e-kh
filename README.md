@@ -44,12 +44,12 @@ npm run smokeTests
 This is underdevelopement/WIP. At the moment, there exists a git-shared
 `.env` file which can be used for configuring certain test attributes.
 
-By default, the test suite will run against the kh uat server.
+By default, the test suite will run against the dev server.
 You can override this by changing the `E2E_BASE_URL` environment variables beforehand:
 
 ```sh
 # Ex: Set the server URL here
-export E2E_BASE_URL=https://oz-kh-uat.mekomsolutions.net/
+export E2E_BASE_URL=https://oz-kh-dev.mekomsolutions.net
 ```
 
 ## Project Structure

@@ -30,10 +30,15 @@ export class HomePage {
     await this.page.getByRole('button', { name: 'ឡកចូលក្នុងប្រព័ន្ធ' }).click();
     await this.page.locator('label').filter({ hasText: '100102. ចំបក់_HC' }).locator('span').first().click();
     await this.page.getByRole('button', { name: 'បញ្ជាក់' }).click();
-    delay(5000);
-    await this.page.getByRole('button', { name: 'Users' }).click();
-    await this.page.getByRole('combobox', { name: 'Select locale' }).selectOption('km');
-    delay(2000);
+    await delay(5000);
+    await this.page.getByLabel('Users').click();
+    await this.page.getByLabel('ជ្រើសរើសភាសា').selectOption('km');
+    await delay(5000);
+    await expect(this.page.getByRole('button', { name: 'ស្វែងរកអ្នកជំងឺ' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'Implementer Tools' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'Add Patient' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'Users' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'App Menu' })).toBeEnabled();
   }
 
   async createPatient() {
@@ -45,8 +50,8 @@ export class HomePage {
 
     await this.page.getByRole('button', { name: 'Add Patient' }).click();
     await expect(this.page.getByRole('button', { name: 'ចុះឈ្មោះអ្នកជំងឺ' })).toBeEnabled();
-    if (await this.page.getByTitle('close notification').isVisible()) {
-      await this.page.getByTitle('close notification').click();
+    if (await this.page.getByTitle('close notification').first().isVisible()) {
+      await this.page.getByTitle('close notification').first().click();
     }
     await this.page.getByLabel('នាមត្រកូល').clear();
     await this.page.getByLabel('នាមត្រកូល').fill(`${patientName.givenName}`);
@@ -57,7 +62,19 @@ export class HomePage {
     await this.page.getByPlaceholder('dd/mm/YYYY').fill('17/08/2001');
     await this.page.getByRole('button', { name: 'ចុះឈ្មោះអ្នកជំងឺ' }).click();
     await expect(this.page.getByText('បង្កើតការចុះឈ្មោះអ្នកជំងឺថ្')).toBeVisible();
-    await this.page.getByRole('button', { name: 'បិទ' }).click();
+    await expect(this.page.getByText('កត់ត្រាសញ្ញាជីវិត')).toBeVisible();
+    await expect(this.page.getByText('បង្ហាញលម្អិត')).toBeVisible();
+    await expect(this.page.getByText('ជ្រើសរើសមុខងារ')).toBeVisible();
+    await delay(4000);
+    await this.page.getByRole('button', { name: 'ចាប់ផ្តើមការពិនិត្' }).click();
+    await this.page.locator('label').filter({ hasText: 'មកពិនិត្យតាមដានជំងឺមិនឆ្លង' }).locator('span').first().click();
+    await this.page.locator('section').filter({ hasText: 'ប្រភេទធានារ៉ាប់រងសូមជ្រើសរើសជម្រើសណាមួយបង់ពេញថ្លៃបង់បញ្ចុះថ្លៃលើកលែងថ្លៃមូលនិធិស' }).getByRole('combobox').first().selectOption('3c2d3d22-afc1-48cf-a46f-0267182aa5e7');
+    await this.page.locator('section').filter({ hasText: 'ប្រភេទធានារ៉ាប់រងសូមជ្រើសរើសជម្រើសណាមួយបង់ពេញថ្លៃបង់បញ្ចុះថ្លៃលើកលែងថ្លៃមូលនិធិស' }).getByRole('combobox').nth(1).selectOption('9f3d41d0-1bcb-49bc-8022-f9c0295aa996');
+    await this.page.locator('div').filter({ hasText: /^សូមជ្រើសរើសជម្រើសណាមួយតំបន់ កតំំបន់ ខតំបន់់ គ$/ }).getByRole('combobox').selectOption('3b592418-9f6a-4526-83c4-1b0e243938fe');
+    await this.page.locator('div').filter({ hasText: /^សូមជ្រើសរើសជម្រើសណាមួយបាទ\/ចាសទេ$/ }).getByRole('combobox').selectOption('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    await this.page.getByRole('button', { name: 'ចាប់ផ្តើមការមកពិនិត្យជំងឺ' }).click();
+    await expect(this.page.getByText('ការមកពិនិត្យជំងឺសកម្')).toBeEnabled();
+    await delay(4000);
   }
 
   async searchPatient(searchText: string) {

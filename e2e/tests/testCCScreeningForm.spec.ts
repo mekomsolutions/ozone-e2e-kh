@@ -1,24 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
-import { patientName } from '../utils/functions/testBase';
 import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
-test.beforeEach(async ({ page }) =>  {
-    const homePage = new HomePage(page);
-    await homePage.initiateLogin();
+test.beforeEach(async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.initiateLogin();
 
-    await expect(page).toHaveURL(/.*home/);
-
-    await homePage.createPatient();
-    await homePage.startPatientVisit();
+  await expect(page).toHaveURL(/.*home/);
 });
 
 test('CC Screening form should load all the form sections', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+  await homePage.createPatient();
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
@@ -30,26 +26,29 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   // verify
   await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  const reproductiveHistorySection = await page.locator('div.tab button:nth-child(1) span').textContent();
+  const historyOfCervicalCancerScreeningSection = await page.locator('div.tab button:nth-child(1) span').textContent();
+  await expect(historyOfCervicalCancerScreeningSection?.includes('ប្រវត្តិនៃការពិនិត្យជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
+
+  const reproductiveHistorySection = await page.locator('div.tab button:nth-child(2) span').textContent();
   await expect(reproductiveHistorySection?.includes('ប្រវត្តិបន្តពូជ')).toBeTruthy();
 
-  const menstrualHistorySection = await page.locator('div.tab button:nth-child(2) span').textContent();
+  const menstrualHistorySection = await page.locator('div.tab button:nth-child(3) span').textContent();
   await expect(menstrualHistorySection?.includes('ប្រវត្តិនៃការមករដូវ')).toBeTruthy();
 
-  const riskFactorsSection = await page.locator('div.tab button:nth-child(3) span').textContent();
+  const riskFactorsSection = await page.locator('div.tab button:nth-child(4) span').textContent();
   await expect(riskFactorsSection?.includes('កត្តាហានិភ័យ')).toBeTruthy();
 
-  const cervicalCancerSection = await page.locator('div.tab button:nth-child(4) span').textContent();
-  await expect(cervicalCancerSection?.includes('ជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
-  await page.getByRole('button', { name: 'បិទ' }).click();
+  const cancerSection = await page.locator('div.tab button:nth-child(5) span').textContent();
+  await expect(cancerSection?.includes('ជំងឺមហារីក')).toBeTruthy();
+  await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
 test('CC Screening form should submit the user input successfully', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+  await homePage.createPatient();
 
-  // replay
+  // reply
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
   const ccScreeningForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
@@ -59,6 +58,7 @@ test('CC Screening form should submit the user input successfully', async ({ pag
   // verify
   await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
+  await page.getByText('ប្រវត្តិបន្តពូជ').click();
   await page.locator('#sexDebutid').clear();
   await page.locator('#sexDebutid').type('20');
   await page.locator('#previousPregnancyid_1').check();
@@ -66,12 +66,12 @@ test('CC Screening form should submit the user input successfully', async ({ pag
   await page.locator('#WOAid').clear();
   await page.locator('#WOAid').type('5');
   await page.locator('#usingFPid_1').check();
-  await page.getByRole('button', { name: 'Save and close' }).click();
-  await expect(page.getByText('The form has been submitted successfully.')).toBeVisible();
-  await page.getByRole('button', { name: 'បិទ' }).click();
+  await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
+  await expect(page.getByText('Tទម្រង់ទិន្នន័យបានបញ្ជូនដោយជោគជ័យ')).toBeVisible();
+  await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
-test.afterEach(async ( {page}) =>  {
+test.afterEach(async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.deletePatient();
   await page.close();
