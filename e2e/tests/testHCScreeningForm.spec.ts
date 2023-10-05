@@ -1,24 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
-import { patientName } from '../utils/functions/testBase';
 import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
-test.beforeEach(async ({ page }) =>  {
-    const homePage = new HomePage(page);
-    await homePage.initiateLogin();
+test.beforeEach(async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.initiateLogin();
 
-    await expect(page).toHaveURL(/.*home/);
-
-    await homePage.createPatient();
-    await homePage.startPatientVisit();
+  await expect(page).toHaveURL(/.*home/);
 });
 
 test('HC Screening form should load all the form sections', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+  await homePage.createPatient();
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
@@ -47,15 +43,15 @@ test('HC Screening form should load all the form sections', async ({ page }) => 
 
   const managementSection = await page.locator('div.tab button:nth-child(6) span').textContent();
   await expect(managementSection?.includes('ការគ្រប់គ្រង')).toBeTruthy();
-  await page.getByRole('button', { name: 'បិទ' }).click();
+  await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
 test('HC screening form should submit user input successfully', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+  await homePage.createPatient();
 
-  // replay
+  // reply
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
   const hcScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
@@ -69,12 +65,12 @@ test('HC screening form should submit user input successfully', async ({ page })
   await page.getByLabel('មិនដែលជក់បារីទេ').check();
   await page.locator('#exerciseid_0').check();
   await page.locator('#drinkAlcoholid_1').check();
-  await page.getByRole('button', { name: 'Save and close' }).click();
-  await expect(page.getByText('The form has been submitted successfully.')).toBeVisible();
-  await page.getByRole('button', { name: 'បិទ' }).click();
+  await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
+  await expect(page.getByText('Tទម្រង់ទិន្នន័យបានបញ្ជូនដោយជោគជ័យ')).toBeVisible();
+  await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
-test.afterEach(async ( {page}) =>  {
+test.afterEach(async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.deletePatient();
   await page.close();

@@ -1,24 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../utils/functions/testBase';
-import { patientName } from '../utils/functions/testBase';
 import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
-test.beforeEach(async ({ page }) =>  {
-    const homePage = new HomePage(page);
-    await homePage.initiateLogin();
+test.beforeEach(async ({ page }) => {
+  const homePage = new HomePage(page);
+  await homePage.initiateLogin();
 
-    await expect(page).toHaveURL(/.*home/);
-
-    await homePage.createPatient();
-    await homePage.startPatientVisit();
+  await expect(page).toHaveURL(/.*home/);
 });
 
 test('All the forms should load on the patient chart page', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  homePage.searchPatient(`${patientName.firstName + ' ' + patientName.givenName}`)
+  await homePage.createPatient();
 
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
@@ -40,10 +36,10 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
-  await page.getByRole('button', { name: 'បិទ' }).click();
+  await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
-test.afterEach(async ( {page}) =>  {
+test.afterEach(async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.deletePatient();
   await page.close();
