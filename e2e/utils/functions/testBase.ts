@@ -59,7 +59,7 @@ export class HomePage {
     await this.page.getByLabel('នាមខ្លួន').fill(`${patientName.firstName}`);
     await this.page.locator('label').filter({ hasText: 'ប្រុស' }).locator('span').first().click();
     await this.page.getByRole('combobox', { name: 'តើអ្នកគិតថាអ្នកជាអ្វីដែរ?' }).selectOption('83c0a1ad-9605-4369-a725-b0049c103554');
-    await this.page.getByPlaceholder('dd/mm/YYYY').fill('17/08/2001');
+    await this.page.getByPlaceholder('dd/mm/YYYY').fill('14/01/1959');
     await this.page.getByRole('button', { name: 'ចុះឈ្មោះអ្នកជំងឺ' }).click();
     await expect(this.page.getByText('បង្កើតការចុះឈ្មោះអ្នកជំងឺថ្')).toBeVisible();
     await expect(this.page.getByText('កត់ត្រាសញ្ញាជីវិត')).toBeVisible();
@@ -116,6 +116,34 @@ export class HomePage {
     const message = await this.page.locator('//*[@id="patientFormVoided"]').textContent();
     expect(message?.includes('This patient has been deleted')).toBeTruthy();
     await this.page.getByRole('link', { name: 'Log out' }).click();
+  }
+
+  async enterCVDRiskIndicatorsInNCDScreeningForm() {
+    await this.page.locator('#Htid').clear();
+    await this.page.locator('#Htid').type('164');
+    await this.page.locator('#Wtid').clear();
+    await this.page.locator('#Wtid').type('75');
+    await this.page.locator('#systoleid').clear();
+    await this.page.locator('#systoleid').type('14');
+    await this.page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
+    await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
+    await this.page.locator('#quitSmokingid').fill('2018');
+    await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
+    delay(5000);
+  }
+
+  async enterCVDRiskIndicatorsInNCDConsultationForm() {
+    await this.page.locator('#Htid').clear();
+    await this.page.locator('#Htid').type('160');
+    await this.page.locator('#Wtid').clear();
+    await this.page.locator('#Wtid').type('88');
+    await this.page.locator('#systoleid').clear();
+    await this.page.locator('#systoleid').type('25');
+    await this.page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
+    await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
+    await this.page.locator('#quitSmokingid').fill('2002');
+    await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
+    delay(5000);
   }
 
 }
