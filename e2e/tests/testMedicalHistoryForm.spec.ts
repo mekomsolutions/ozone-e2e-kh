@@ -46,6 +46,7 @@ test('NCD Medical history form should submit user input successfully', async ({ 
   // verify
   await page.getByText('ប្រវត្តជំងឺ').click();
   await delay(3000);
+  await page.locator('#screenedForDMid_0').check();
   await page.locator('#diagnosedForDMid_1').check();
   await page.locator('#HighBloodPressureSxid_1').check();
   await page.locator('#prematureHeartOrStrokeDiseaseid_0').check();
