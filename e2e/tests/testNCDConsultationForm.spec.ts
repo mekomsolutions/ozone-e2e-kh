@@ -223,7 +223,7 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
-test('CVD risk score in NCD Consultation form should be computed correctly', async ({ page }) => {
+test('NCD Consultation form should compute CVD risk score correctly', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
   await homePage.createPatient();

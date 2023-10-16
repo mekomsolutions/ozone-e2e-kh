@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
   await expect(page).toHaveURL(/.*home/);
 });
 
-test('HC Screening form should load all the form sections', async ({ page }) => {
+test('NCD Screening form should load all the form sections', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
   await homePage.createPatient();
@@ -46,7 +46,7 @@ test('HC Screening form should load all the form sections', async ({ page }) => 
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
-test('HC screening form should submit user input successfully', async ({ page }) => {
+test('NCD screening form should submit user input successfully', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
   await homePage.createPatient();
@@ -213,7 +213,7 @@ test('HC screening form should submit user input successfully', async ({ page })
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
 
-test('CVD risk score in NCD screening form should be computed correctly', async ({ page }) => {
+test('NCD screening form should compute CVD risk score correctly', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
   await homePage.createPatient();
