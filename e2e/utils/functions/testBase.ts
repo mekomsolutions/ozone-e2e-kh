@@ -24,15 +24,17 @@ export class HomePage {
 
   async initiateLogin() {
     await this.page.goto(`${process.env.E2E_BASE_URL}`);
-    await this.page.getByLabel('ឈ្មោះអ្នកប្រើប្រាស់').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
-    await this.page.getByRole('button', { name: 'បន្ត' }).click();
-    await this.page.getByLabel('លេខសម្ងាត់').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
-    await this.page.getByRole('button', { name: 'ឡកចូលក្នុងប្រព័ន្ធ' }).click();
-    await this.page.locator('label').filter({ hasText: '100102. ចំបក់_HC' }).locator('span').first().click();
-    await this.page.getByRole('button', { name: 'បញ្ជាក់' }).click();
+    await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
+    await this.page.locator('button[type="submit"]').click();
+    await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
+    await this.page.locator('button[type="submit"]').click();
+    await this.page.locator('input[role="searchbox"]').click();
+    await this.page.locator('input[role="searchbox"]').fill('100102');
+    await this.page.locator('span').first().click();
+    await this.page.locator('button[type="submit"]').click();
     await delay(5000);
     await this.page.getByLabel('Users').click();
-    await this.page.getByLabel('ជ្រើសរើសភាសា').selectOption('km');
+    await this.page.locator('#selectLocale').selectOption('km');
     await delay(5000);
     await expect(this.page.getByRole('button', { name: 'ស្វែងរកអ្នកជំងឺ' })).toBeEnabled();
     await expect(this.page.getByRole('button', { name: 'Implementer Tools' })).toBeEnabled();
