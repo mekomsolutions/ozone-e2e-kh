@@ -28,10 +28,10 @@ export class HomePage {
     await this.page.locator('button[type="submit"]').click();
     await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
     await this.page.locator('button[type="submit"]').click();
-    await this.page.locator('input[class="cds--search-input"]').click();
-    await this.page.locator('input[class="cds--search-input"]').fill('100102');
+    await this.page.locator('input[role="searchbox"]').click();
+    await this.page.locator('input[role="searchbox"]').fill('100102');
     await this.page.locator('span').first().click();
-    await this.page.locator('button[class="cds--btn cds--btn--primary"]').click();
+    await this.page.locator('button[type="submit"]').click();
     await delay(5000);
     await this.page.getByLabel('Users').click();
     await this.page.locator('#selectLocale').selectOption('km');
