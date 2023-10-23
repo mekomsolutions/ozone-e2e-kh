@@ -19,7 +19,7 @@ test('NCD Medical history form should load all form sections', async ({ page }) 
   // reply
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  const medicalHistoryForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
 
@@ -39,7 +39,7 @@ test('NCD Medical history form should submit user input successfully', async ({ 
   // reply
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  const medicalHistoryForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  const medicalHistoryForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
 
