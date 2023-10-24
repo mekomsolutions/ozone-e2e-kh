@@ -19,7 +19,7 @@ test('NCD Screening form should load all the form sections', async ({ page }) =>
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
+  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
   await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
 
@@ -54,7 +54,7 @@ test('NCD screening form should submit user input successfully', async ({ page }
   // reply
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
+  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
   await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
 
@@ -222,7 +222,7 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
 
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
+  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
   await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
   await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
   await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
