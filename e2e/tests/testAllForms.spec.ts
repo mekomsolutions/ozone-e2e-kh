@@ -4,16 +4,12 @@ import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
-test.beforeEach(async ({ page }) => {
+test('All the forms should load on the patient chart page', async ({ page }) => {
+  // setup
   const homePage = new HomePage(page);
   await homePage.initiateLogin();
 
   await expect(page).toHaveURL(/.*home/);
-});
-
-test('All the forms should load on the patient chart page', async ({ page }) => {
-  // setup
-  const homePage = new HomePage(page);
   await homePage.createPatient();
 
   // replay
@@ -37,10 +33,94 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
+  await homePage.deletePatient();
+});
+
+test('Location picker should search locations by entering a numeric value, a Khmer value and an English value from the location code', async ({ page }) => {
+  // setup
+  const homePage = new HomePage(page);
+  await page.goto(`${process.env.E2E_BASE_URL}`);
+
+  // reply
+  await homePage.goToLocation();
+
+  // verify
+  let location = await page.locator('.cds--radio-button__label-text');
+  await page.locator('input[role="searchbox"]').type('100106');
+  await delay(1000);
+  await expect(page.getByText('100106')).toBeVisible();
+  await expect(page.getByText('ពង្រ_HC')).toBeVisible();
+  await expect(location).toHaveText('100106. ពង្រ_HC');
+  await expect(page.getByText('100101')).not.toBeVisible();
+  await expect(page.getByText('100102')).not.toBeVisible();
+  await expect(page.getByText('100103')).not.toBeVisible();
+  await expect(page.getByText('100105')).not.toBeVisible();
+  await homePage.clearLocation();
+
+  await page.locator('input[role="searchbox"]').type('មន្ទីរពេទ្យបង្អែកឆ្លូង_RH');
+  await delay(1000);
+  await expect(page.getByText('មន្ទីរពេទ្យបង្អែកឆ្លូង_RH')).toBeVisible();
+  await expect(page.getByText('100101')).toBeVisible();
+  await expect(location).toHaveText('100101. មន្ទីរពេទ្យបង្អែកឆ្លូង_RH');
+  await expect(page.getByText('ចំបក់_HC')).not.toBeVisible();
+  await expect(page.getByText('តាម៉ៅ_HC')).not.toBeVisible();
+  await expect(page.getByText('ខ្សាច់អណ្តែត_HC ')).not.toBeVisible();
+  await expect(page.getByText('ពង្រ_HC')).not.toBeVisible();
+  await homePage.clearLocation();
+
+  await page.locator('input[role="searchbox"]').type('Khsach Andet_HC');
+  await delay(1000);
+  await expect(page.getByText('ខ្សាច់អណ្តែត_HC')).toBeVisible();
+  await expect(location).toHaveText('100105. ខ្សាច់អណ្តែត_HC');
+  await expect(page.getByText('មន្ទីរពេទ្យបង្អែកឆ្លូង_RH ')).not.toBeVisible();
+  await expect(page.getByText('ចំបក់_HC')).not.toBeVisible();
+  await expect(page.getByText('តាម៉ៅ_HC')).not.toBeVisible();
+  await expect(page.getByText('ពង្រ_HC')).not.toBeVisible();
+
+  await location.click();
+  await page.locator('button[type="submit"]').click();
+  await delay(5000);
+  await homePage.switchToEnglishLocale();
+  await page.getByLabel('Users').click();
+  await page.locator('button[aria-labelledby="Logout"]').click();
+  await homePage.goToLocation();
+
+  await page.locator('input[role="searchbox"]').type('100103');
+  await delay(1000);
+  await expect(page.getByText('100103')).toBeVisible();
+  await expect(page.getByText('Ta Mao_HC')).toBeVisible();
+  await expect(location).toHaveText('100103. Ta Mao_HC');
+  await expect(page.getByText('100101')).not.toBeVisible();
+  await expect(page.getByText('100102')).not.toBeVisible();
+  await expect(page.getByText('100105')).not.toBeVisible();
+  await expect(page.getByText('100106')).not.toBeVisible();
+  await homePage.clearLocation();
+
+  await page.locator('input[role="searchbox"]').type('Khsach Andet_HC');
+  await delay(1000);
+  await expect(page.getByText('Khsach Andet_HC')).toBeVisible();
+  await expect(page.getByText('100105')).toBeVisible();
+  await expect(location).toHaveText('100105. Khsach Andet_HC');
+  await expect(page.getByText('Chhlong_RH')).not.toBeVisible();
+  await expect(page.getByText('Chambak_HC')).not.toBeVisible();
+  await expect(page.getByText('Ta Mao_HC ')).not.toBeVisible();
+  await expect(page.getByText('Pongro_HC')).not.toBeVisible();
+  await homePage.clearLocation();
+
+  await page.locator('input[role="searchbox"]').type('ចំបក់_HC');
+  await delay(1000);
+  await expect(page.getByText('Chambak_HC')).toBeVisible();
+  await expect(page.getByText('100102')).toBeVisible();
+  await expect(location).toHaveText('100102. Chambak_HC');
+  await expect(page.getByText('Chhlong_RH')).not.toBeVisible();
+  await expect(page.getByText('Ta Mao_HC ')).not.toBeVisible();
+  await expect(page.getByText('Khsach Andet_HC')).not.toBeVisible();
+  await expect(page.getByText('Pongro_HC')).not.toBeVisible();
+  await location.click();
+  await page.locator('button[type="submit"]').click();
+  await expect(page).toHaveURL(/.*home/);
 });
 
 test.afterEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.deletePatient();
   await page.close();
 });
