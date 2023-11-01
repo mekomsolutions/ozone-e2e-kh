@@ -26,7 +26,7 @@ test('NCD Consultation form should load all the form sections', async ({ page })
   // verify
   await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
-  const medicalAssessmentSection = await page.locator('div.tab button:nth-child(1) span').textContent();
+  const medicalAssessmentSection = await page.locator('div button.tablinks.completed.active span').textContent();
   await expect(medicalAssessmentSection?.includes('ការវាយតម្លៃវេជ្ជសាស្រ្ត')).toBeTruthy();
 
   const lifeStyleSection = await page.locator('div.tab button:nth-child(2) span').textContent();

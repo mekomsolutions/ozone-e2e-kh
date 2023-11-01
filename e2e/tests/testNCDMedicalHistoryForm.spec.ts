@@ -26,7 +26,7 @@ test('NCD Medical history form should load all form sections', async ({ page }) 
   // verify
   await page.getByText('ប្រវត្តជំងឺ').click();
   await delay(3000);
-  const medicalHistorySection = await page.locator('ofe-form-renderer div button').textContent();
+  const medicalHistorySection = await page.locator('div button.tablinks.completed.active span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
