@@ -26,7 +26,7 @@ test('NCD Screening form should load all the form sections', async ({ page }) =>
   // verify
   await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
   await delay(3000);
-  const medicalHistorySection = await page.locator('div.tab button:nth-child(1) span').textContent();
+  const medicalHistorySection = await page.locator('button.tablinks.completed.active span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
 
   const investigationsSection = await page.locator('div.tab button:nth-child(2) span').textContent();
@@ -234,6 +234,19 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
   const  computedValue = await page.locator('input#CVDscoreid').inputValue();
   let cVDRiskScore = Number(computedValue);
   await expect(cVDRiskScore).toBe(6);
+  await page.getByRole('button', { name: 'ការគ្រប់គ្រង' }).click();
+  await delay(1000);
+  switch (true) {
+    case cVDRiskScore < 20:
+      await expect(await page.getByLabel('ធ្វើការតាមដានរៀងរាល់ឆ្នាំ (ហានិភ័យ <20%)')).toBeChecked();
+      break;
+    case cVDRiskScore >= 20 && cVDRiskScore < 30:
+      await expect(await page.getByLabel('ធ្វើការតាមដានរៀងរាល់៦ខែម្តង (ហានិភ័យ 20% ទៅ <30%)')).toBeChecked();
+      break;
+    case cVDRiskScore >= 30:
+      await expect(await page.getByLabel('្វើការតាមដានរៀងរាល់៣ខែម្តង (ហានិភ័យ >=30%)')).toBeChecked();
+      break;
+  }
 });
 
 test.afterEach(async ({ page }) => {
