@@ -148,4 +148,22 @@ export class HomePage {
     delay(5000);
   }
 
+  async goToLocation() {
+    await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
+    await this.page.locator('button[type="submit"]').click();
+    await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
+    await this.page.locator('button[type="submit"]').click();
+  }
+
+  async clearLocation() {
+    await this.page.locator('input[role="searchbox"]').clear();
+    await delay(2000);
+  }
+
+  async switchToEnglishLocale() {
+    await this.page.getByLabel('Users').click();
+    await this.page.locator('#selectLocale').selectOption('en');
+    await delay(5000);
+    await expect(this.page.getByRole('button', { name: 'Search Patient' })).toBeEnabled();
+  }
 }
