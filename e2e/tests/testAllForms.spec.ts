@@ -45,7 +45,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await homePage.goToLocation();
 
   // verify
-  let location = await page.locator('.cds--radio-button__label-text');
+  let location = await page.locator('div fieldset label');
   await page.locator('input[role="searchbox"]').type('100106');
   await delay(1000);
   await expect(page.getByText('100106')).toBeVisible();
