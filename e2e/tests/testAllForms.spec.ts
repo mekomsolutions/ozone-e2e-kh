@@ -21,9 +21,9 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
   await expect(ccScreeningForm?.includes('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
   await expect(page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeVisible();
 
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
-  await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
-  await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
+  const ncdScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  await expect(ncdScreeningForm?.includes('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeTruthy();
+  await expect(page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeVisible();
 
   const consultationForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
   await expect(consultationForm?.includes('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeTruthy();
