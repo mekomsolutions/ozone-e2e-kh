@@ -19,12 +19,12 @@ test('NCD Screening form should load all the form sections', async ({ page }) =>
   // replay
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
-  await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
-  await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
+  const ncdScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  await expect(ncdScreeningForm?.includes('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeTruthy();
+  await expect(page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeVisible();
 
   // verify
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   const medicalHistorySection = await page.locator('button.tablinks.completed.active span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
@@ -54,12 +54,12 @@ test('NCD screening form should submit user input successfully', async ({ page }
   // reply
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
-  await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
-  await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
+  const ncdScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  await expect(ncdScreeningForm?.includes('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeTruthy();
+  await expect(page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeVisible();
 
   // verify
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.locator('#screenedForDMid_0').check();
   await page.locator('#knownHypertensiveid_0').check();
@@ -87,7 +87,7 @@ test('NCD screening form should submit user input successfully', async ({ page }
 
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ការពិនិត្យវិភាគ' }).click();
   await page.locator('#Htid').clear();
@@ -127,7 +127,7 @@ test('NCD screening form should submit user input successfully', async ({ page }
 
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
   await page.getByLabel('កំពុងជក់បារី').check();
@@ -142,7 +142,7 @@ test('NCD screening form should submit user input successfully', async ({ page }
 
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ការវាយតម្លៃ' }).click();
   await page.getByLabel('វេជ្ជបណ្ឌិត/គ្រូពេទ្យមធ្យម').check();
@@ -173,7 +173,7 @@ test('NCD screening form should submit user input successfully', async ({ page }
 
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
   await page.locator('#Diagnosis1id_1').check();
@@ -193,7 +193,7 @@ test('NCD screening form should submit user input successfully', async ({ page }
 
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ការគ្រប់គ្រង' }).click();
   await page.getByLabel('ធ្វើការតាមដានរៀងរាល់៦ខែម្តង (ហានិភ័យ 20% ទៅ <30%)').check();
@@ -222,10 +222,10 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
   await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
   await delay(4000);
 
-  const hcScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
-  await expect(hcScreeningForm?.includes('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeTruthy();
-  await expect(page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព')).toBeVisible();
-  await page.getByText('ពិនិត្យស្វែងរកជំងឺមិនឆ្លងនៅមណ្ឌលសុខភាព').click();
+  const ncdScreeningForm = await page.locator('table tbody tr:nth-child(4) td:nth-child(1) a').textContent();
+  await expect(ncdScreeningForm?.includes('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeTruthy();
+  await expect(page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeVisible();
+  await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ការពិនិត្យវិភាគ' }).click();
   await homePage.enterCVDRiskIndicatorsInNCDScreeningForm();
