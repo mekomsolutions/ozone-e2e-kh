@@ -35,7 +35,7 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run E2E tests
-        run: npm run smokeTests
+        run: npm run khE2ETests
 
       - name: Upload report
         uses: actions/upload-artifact@v3
