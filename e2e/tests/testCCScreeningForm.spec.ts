@@ -26,7 +26,7 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   // verify
   await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  const historyOfCervicalCancerScreeningSection = await page.locator('div button.tablinks.completed.active span').textContent();
+  const historyOfCervicalCancerScreeningSection = await page.locator('form button.tablinks.completed.active span').textContent();
   await expect(historyOfCervicalCancerScreeningSection?.includes('ប្រវត្តិនៃការពិនិត្យជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
 
   const reproductiveHistorySection = await page.locator('div.tab button:nth-child(2) span').textContent();
