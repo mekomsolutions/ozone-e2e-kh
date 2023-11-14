@@ -20,8 +20,6 @@ export class HomePage {
 
   readonly patientSearchIcon = () => this.page.locator('[data-testid="searchPatientIcon"]');
   readonly patientSearchBar = () => this.page.locator('[data-testid="patientSearchBar"]');
-  readonly floatingSearchResultsContainer = () => this.page.locator('[data-testid="floatingSearchResultsContainer"]');
-
   async initiateLogin() {
     await this.page.goto(`${process.env.E2E_BASE_URL}`);
     await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
@@ -34,8 +32,12 @@ export class HomePage {
     await this.page.locator('button[type="submit"]').click();
     await delay(5000);
     await this.page.getByLabel('Users').click();
-    await this.page.locator('#selectLocale').selectOption('km');
-    await delay(5000);
+    if ((await this.page.locator('#selectLocale').selectOption('en')).includes('en')) {
+      await this.page.locator('#selectLocale').selectOption('km');
+      await delay(5000);
+    } else {
+      await this.page.getByLabel('Users').click();
+    }
     await expect(this.page.getByRole('button', { name: 'ស្វែងរកអ្នកជំងឺ' })).toBeEnabled();
     await expect(this.page.getByRole('button', { name: 'Implementer Tools' })).toBeEnabled();
     await expect(this.page.getByRole('button', { name: 'Add Patient' })).toBeEnabled();

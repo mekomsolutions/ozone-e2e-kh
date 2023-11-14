@@ -26,7 +26,7 @@ test('NCD Screening form should load all the form sections', async ({ page }) =>
   // verify
   await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
-  const medicalHistorySection = await page.locator('button.tablinks.completed.active span').textContent();
+  const medicalHistorySection = await page.locator('form button.tablinks.completed.active span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
 
   const investigationsSection = await page.locator('div.tab button:nth-child(2) span').textContent();

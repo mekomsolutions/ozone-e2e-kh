@@ -26,7 +26,7 @@ test('NCD Medical history form should load all form sections', async ({ page }) 
   // verify
   await page.getByText('ប្រវត្តជំងឺ').click();
   await delay(3000);
-  const medicalHistorySection = await page.locator('div button.tablinks.completed.active span').textContent();
+  const medicalHistorySection = await page.locator('form button.tablinks.completed.active span').textContent();
   await expect(medicalHistorySection?.includes('ប្រវត្តិជំងឺ')).toBeTruthy();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });
@@ -53,7 +53,7 @@ test('NCD Medical history form should submit user input successfully', async ({ 
   await page.locator('#diabetesOrKidneyDiseaseid_0').check();
   await page.locator('#traditionmedicineUseid_1').check();
   await page.locator('#presenceOfAllergiesid_1').check();
-  await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
+  await page.locator('button[type="submit"]').click();
   await expect(page.getByText('Tទម្រង់ទិន្នន័យបានបញ្ជូនដោយជោគជ័យ')).toBeVisible();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
 });

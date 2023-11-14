@@ -4,12 +4,16 @@ import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
-test('All the forms should load on the patient chart page', async ({ page }) => {
-  // setup
+test.beforeEach(async ({ page }) => {
   const homePage = new HomePage(page);
   await homePage.initiateLogin();
 
   await expect(page).toHaveURL(/.*home/);
+});
+
+test('All the forms should load on the patient chart page', async ({ page }) => {
+  // setup
+  const homePage = new HomePage(page);
   await homePage.createPatient();
 
   // replay
@@ -39,13 +43,14 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
 test('Location picker should search locations by entering a numeric value, a Khmer value and an English value from the location code', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  await page.goto(`${process.env.E2E_BASE_URL}`);
+  await page.getByLabel('Users').click();
+  await page.locator('button[aria-labelledby="Logout"]').click();
 
   // reply
   await homePage.goToLocation();
 
   // verify
-  let location = await page.locator('form fieldset label');
+  let location = await page.locator('form fieldset div:nth-child(1) label');
   await page.locator('input[role="searchbox"]').type('100106');
   await delay(1000);
   await expect(page.getByText('100106')).toBeVisible();
@@ -109,7 +114,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
 
   await page.locator('input[role="searchbox"]').type('ចំបក់_HC');
   await delay(1000);
-  await expect(page.getByText('Chambak_HC')).toBeVisible();
+  await expect(page.getByText('Chambak_HC').first()).toBeVisible();
   await expect(page.getByText('100102')).toBeVisible();
   await expect(location).toHaveText('100102. Chambak_HC');
   await expect(page.getByText('Chhlong_RH')).not.toBeVisible();
