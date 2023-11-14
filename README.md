@@ -70,5 +70,8 @@ e2e
 When writing a new test case, create a spec in `./e2e/tests`
 
 ## GitHub Actions integration
-The e2e.yml workflow is made up of one job that is triggered by PRs, and on a push.
-The env.yml workflow is made up of one job that supports selection of a preferred environment at runtime.
+The e2e.yml workflow is made up of one job that runs upon _Git pull requests_ and the other upon _Git push(es)_.
+
+The runE2ETestsOnProvidedEnv.yml workflow is made up of one job that allows selection of a preferred environment at runtime. Note: You need to select the preferred environment to run the tests.
+
+<img src="readme/user_inputs.png" alt="User Inputs" width="1000"/>
