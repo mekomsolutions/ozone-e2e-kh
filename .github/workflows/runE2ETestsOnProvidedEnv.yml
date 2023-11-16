@@ -6,8 +6,12 @@ on:
     inputs:
       environment:
         description: 'Choose test environment'
-        type: environment
         required: true
+        default: 'oz-kh-dev'
+        type: choice
+        options:
+          - oz-kh-dev
+          - oz-kh-uat
 jobs:
   build:
     runs-on: ubuntu-latest
