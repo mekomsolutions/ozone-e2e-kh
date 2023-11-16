@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "khE2ETests": "npx playwright test"
+    "khE2ETests": "npx playwright test AllForms"
   },
   "keywords": [],
   "author": "",

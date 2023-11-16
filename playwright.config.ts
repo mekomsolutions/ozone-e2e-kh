@@ -10,6 +10,7 @@ const config: PlaywrightTestConfig = {
   },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
+  workers: process.env.CI ? 1 : 1,
   retries: 0,
   reporter: process.env.CI ? [['junit', { outputFile: 'results.xml' }], ['html']] : [['html']],
   globalSetup: require.resolve('./e2e/utils/configs/globalSetup'),
@@ -25,7 +26,9 @@ const config: PlaywrightTestConfig = {
         viewport: {width: 1920, height: 1080},
         launchOptions: {
           slowMo: 600
-        }
+        },
+        video: 'retain-on-failure',
+        screenshot: 'only-on-failure'
       },
     },
   ],

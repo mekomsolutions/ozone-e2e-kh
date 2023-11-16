@@ -4,20 +4,17 @@ import { delay } from '../utils/functions/testBase';
 
 let homePage: HomePage;
 
-test.beforeEach(async ({ page }) => {
+test('All the forms should load on the patient chart page', async ({ page }) => {
+  // setup
   const homePage = new HomePage(page);
   await homePage.initiateLogin();
 
   await expect(page).toHaveURL(/.*home/);
-});
 
-test('All the forms should load on the patient chart page', async ({ page }) => {
-  // setup
-  const homePage = new HomePage(page);
   await homePage.createPatient();
 
   // replay
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
 
   // verify
@@ -43,11 +40,9 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
 test('Location picker should search locations by entering a numeric value, a Khmer value and an English value from the location code', async ({ page }) => {
   // setup
   const homePage = new HomePage(page);
-  await page.getByLabel('Users').click();
-  await page.locator('button[aria-labelledby="Logout"]').click();
 
   // reply
-  await homePage.goToLocation();
+  await homePage.goToLoginLocation();
 
   // verify
   let location = await page.locator('form fieldset div:nth-child(1) label');
@@ -60,7 +55,9 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('100102')).not.toBeVisible();
   await expect(page.getByText('100103')).not.toBeVisible();
   await expect(page.getByText('100105')).not.toBeVisible();
-  await homePage.clearLocation();
+  await location.click();
+  await page.locator('button[type="submit"]').click();
+  await homePage.changeLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('មន្ទីរពេទ្យបង្អែកឆ្លូង_RH');
   await delay(1000);
@@ -71,7 +68,9 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('តាម៉ៅ_HC')).not.toBeVisible();
   await expect(page.getByText('ខ្សាច់អណ្តែត_HC ')).not.toBeVisible();
   await expect(page.getByText('ពង្រ_HC')).not.toBeVisible();
-  await homePage.clearLocation();
+  await location.click();
+  await page.locator('button[type="submit"]').click();
+  await homePage.changeLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('Khsach Andet_HC');
   await delay(1000);
@@ -86,9 +85,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await page.locator('button[type="submit"]').click();
   await delay(5000);
   await homePage.switchToEnglishLocale();
-  await page.getByLabel('Users').click();
-  await page.locator('button[aria-labelledby="Logout"]').click();
-  await homePage.goToLocation();
+  await homePage.switchLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('100103');
   await delay(1000);
@@ -99,7 +96,9 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('100102')).not.toBeVisible();
   await expect(page.getByText('100105')).not.toBeVisible();
   await expect(page.getByText('100106')).not.toBeVisible();
-  await homePage.clearLocation();
+  await location.click();
+  await page.locator('button[type="submit"]').click();
+  await homePage.switchLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('Khsach Andet_HC');
   await delay(1000);
@@ -110,7 +109,9 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('Chambak_HC')).not.toBeVisible();
   await expect(page.getByText('Ta Mao_HC ')).not.toBeVisible();
   await expect(page.getByText('Pongro_HC')).not.toBeVisible();
-  await homePage.clearLocation();
+  await location.click();
+  await page.locator('button[type="submit"]').click();
+  await homePage.switchLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('ចំបក់_HC');
   await delay(1000);
@@ -124,6 +125,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await location.click();
   await page.locator('button[type="submit"]').click();
   await expect(page).toHaveURL(/.*home/);
+  await homePage.switchToKhmerLocale();
 });
 
 test.afterEach(async ({ page }) => {
