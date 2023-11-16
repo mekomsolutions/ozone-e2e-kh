@@ -17,7 +17,7 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   await homePage.createPatient();
 
   // replay
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
   const ccScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
   await expect(ccScreeningForm?.includes('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
@@ -49,7 +49,7 @@ test('CC Screening form should submit user input successfully', async ({ page })
   await homePage.createPatient();
 
   // reply
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
   const ccScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
   await expect(ccScreeningForm?.includes('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
@@ -58,7 +58,7 @@ test('CC Screening form should submit user input successfully', async ({ page })
   // verify
   await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  await page.getByLabel('បាទ/ចាស').check();
+  await page.getByLabel('បាទ').check();
   await page.getByLabel('តេស្តវីអាយអេ').check();
   await page.getByRole('radio', { name: 'វិជ្ជមាន', exact: true }).check();
   await page.getByLabel('បានព្យាបាល', { exact: true }).check();
@@ -71,9 +71,9 @@ test('CC Screening form should submit user input successfully', async ({ page })
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
+  await page.getByLabel('forms').getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ប្រវត្តិបន្តពូជ' }).click();
   await page.locator('#sexDebutid').click();
@@ -97,11 +97,10 @@ test('CC Screening form should submit user input successfully', async ({ page })
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
+  await page.getByLabel('forms').getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await page.getByRole('button', { name: 'ប្រវត្តិនៃការមករដូវ' }).click();
   await page.locator('#menarcheid').clear();
   await page.locator('#menarcheid').fill('12');
@@ -114,11 +113,10 @@ test('CC Screening form should submit user input successfully', async ({ page })
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
+  await page.getByLabel('forms').getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await page.getByRole('button', { name: 'កត្តាហានិភ័យ' }).click();
   await page.locator('#bleedingAfterSexid_0').check();
   await page.getByLabel('មិនដែលជក់បារីទេ').check();
@@ -141,11 +139,10 @@ test('CC Screening form should submit user input successfully', async ({ page })
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
+  await page.getByLabel('forms').getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await page.getByRole('button', { name: 'ជំងឺមហារីក', exact: true }).click();
   await page.locator('#cervicalCancerEducid_1').check();
   await page.locator('#HPVTestResultid_0').check();
@@ -161,12 +158,11 @@ test('CC Screening form should submit user input successfully', async ({ page })
   await page.getByText('ការយកសំណាកមាត់ស្បូនដើម្បីពិនិត្យ (រកជំងឺមហារីក)').click();
   await page.locator('#papSmearid_0').check();
   await page.getByLabel('ការខូចខាតកម្រិតខ្ពស់នៃស្រទាប់ជាលិកាក្នុងមាត់ស្បូន (កម្រិតទី២ និងទី៣)').check();
-  await page.locator('#referralSiteid').selectOption('d583bf9f-1117-4dd6-8bd3-f3e337615bb6');
   await page.locator('label').filter({ hasText: 'ការធ្វើតេស្តបញ្ជាក់/ការព្យាបាល' }).click();
-  await page.locator('label').filter({ hasText: 'ផ្សេងទៀត' }).first().click();
+  await page.locator('label').filter({ hasText: 'សង្ស័យមានមហារីក' }).first().click();
   await page.locator('label').filter({ hasText: 'ទម្រង់ការវះកាត់ដោយការជាសាច់ជុំវិញមាត់ស្បូន' }).click();
   await page.locator('label').filter({ hasText: 'ការព្យាបាលដោយប្រើកាំរស្មី' }).click();
-  await page.locator('aside').filter({ hasText: 'Medicationsកំណត់សម្គាល់ទម្រង់បញ្ជីអ្នកជំងឺ' }).click();
+  await page.getByLabel('៤​ សប្តាហ៍').check();
   await page.locator('#followUpid_2').check();
   await page.getByLabel('ដុំំសាច់ដែលមិនមានចលនា').check();
   await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();

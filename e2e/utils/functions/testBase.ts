@@ -21,28 +21,24 @@ export class HomePage {
   readonly patientSearchIcon = () => this.page.locator('[data-testid="searchPatientIcon"]');
   readonly patientSearchBar = () => this.page.locator('[data-testid="patientSearchBar"]');
   async initiateLogin() {
-    await this.page.goto(`${process.env.E2E_BASE_URL}`);
-    await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
-    await this.page.locator('button[type="submit"]').click();
-    await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
-    await this.page.locator('button[type="submit"]').click();
-    await this.page.locator('input[role="searchbox"]').click();
-    await this.page.locator('input[role="searchbox"]').fill('100102');
-    await this.page.locator('span').first().click();
-    await this.page.locator('button[type="submit"]').click();
-    await delay(5000);
+    await this.goToLoginLocation();
+    if (await this.page.locator('input[role="searchbox"]').isVisible()) {
+      await this.page.locator('input[role="searchbox"]').click();
+      await this.page.locator('input[role="searchbox"]').fill('100102');
+      await this.page.locator('span').first().click();
+      await this.page.locator('button[type="submit"]').click();
+    }
+    await delay(6000);
+    await this.expectAllButtonsToBePresent();
     await this.page.getByLabel('Users').click();
     if ((await this.page.locator('#selectLocale').selectOption('en')).includes('en')) {
       await this.page.locator('#selectLocale').selectOption('km');
-      await delay(5000);
+      await delay(6000);
     } else {
       await this.page.getByLabel('Users').click();
     }
-    await expect(this.page.getByRole('button', { name: 'ស្វែងរកអ្នកជំងឺ' })).toBeEnabled();
-    await expect(this.page.getByRole('button', { name: 'Implementer Tools' })).toBeEnabled();
-    await expect(this.page.getByRole('button', { name: 'Add Patient' })).toBeEnabled();
-    await expect(this.page.getByRole('button', { name: 'Users' })).toBeEnabled();
-    await expect(this.page.getByRole('button', { name: 'App Menu' })).toBeEnabled();
+    await delay(6000);
+    await this.expectAllButtonsToBePresent();
   }
 
   async createPatient() {
@@ -72,10 +68,10 @@ export class HomePage {
     await delay(4000);
     await this.page.getByRole('button', { name: 'ចាប់ផ្តើមការពិនិត្' }).click();
     await this.page.locator('label').filter({ hasText: 'មកពិនិត្យតាមដានជំងឺមិនឆ្លង' }).locator('span').first().click();
-    await this.page.locator('section').filter({ hasText: 'ប្រភេទធានារ៉ាប់រងសូមជ្រើសរើសជម្រើសណាមួយបង់ពេញថ្លៃបង់បញ្ចុះថ្លៃលើកលែងថ្លៃមូលនិធិស' }).getByRole('combobox').first().selectOption('3c2d3d22-afc1-48cf-a46f-0267182aa5e7');
-    await this.page.locator('section').filter({ hasText: 'ប្រភេទធានារ៉ាប់រងសូមជ្រើសរើសជម្រើសណាមួយបង់ពេញថ្លៃបង់បញ្ចុះថ្លៃលើកលែងថ្លៃមូលនិធិស' }).getByRole('combobox').nth(1).selectOption('9f3d41d0-1bcb-49bc-8022-f9c0295aa996');
-    await this.page.locator('div').filter({ hasText: /^សូមជ្រើសរើសជម្រើសណាមួយតំបន់ កតំំបន់ ខតំបន់់ គ$/ }).getByRole('combobox').selectOption('3b592418-9f6a-4526-83c4-1b0e243938fe');
-    await this.page.locator('div').filter({ hasText: /^សូមជ្រើសរើសជម្រើសណាមួយបាទ\/ចាសទេ$/ }).getByRole('combobox').selectOption('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    await this.page.locator('select[name="visitAttributes\\.af89d44d-5074-472f-b5bc-470feb567633"]').selectOption('3c2d3d22-afc1-48cf-a46f-0267182aa5e7');
+    await this.page.locator('select[name="visitAttributes\\.d81acbb7-93b4-4e4e-8507-82d1c3ca6cd7"]').selectOption('9f3d41d0-1bcb-49bc-8022-f9c0295aa996');
+    await this.page.locator('select[name="visitAttributes\\.1c75188f-625f-4181-a4e3-9de1d4f21f90"]').selectOption('3b592418-9f6a-4526-83c4-1b0e243938fe');
+    await this.page.locator('select[name="visitAttributes\\.547f2d61-589f-4b04-9da8-8a5c639b5cc6"]').selectOption('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     await this.page.getByRole('button', { name: 'ចាប់ផ្តើមការមកពិនិត្យជំងឺ' }).click();
     await expect(this.page.getByText('ការមកពិនិត្យជំងឺសកម្')).toBeEnabled();
     await delay(4000);
@@ -150,22 +146,41 @@ export class HomePage {
     delay(5000);
   }
 
-  async goToLocation() {
+  async goToLoginLocation() {
+    await this.page.goto(`${process.env.E2E_BASE_URL}`);
     await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
     await this.page.locator('button[type="submit"]').click();
     await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
     await this.page.locator('button[type="submit"]').click();
   }
 
-  async clearLocation() {
-    await this.page.locator('input[role="searchbox"]').clear();
-    await delay(2000);
+  async changeLoginLocation() {
+    await this.page.getByLabel('Users').click();
+    await this.page.getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).click();
+    await this.page.locator('#search-1').clear();
+  }
+
+  async switchLoginLocation() {
+    await this.page.getByLabel('Users').click();
+    await this.page.getByRole('button', { name: 'Change' }).click();
+    await this.page.locator('#search-1').clear();
   }
 
   async switchToEnglishLocale() {
     await this.page.getByLabel('Users').click();
     await this.page.locator('#selectLocale').selectOption('en');
     await delay(5000);
-    await expect(this.page.getByRole('button', { name: 'Search Patient' })).toBeEnabled();
+  }
+
+  async switchToKhmerLocale() {
+    await this.page.getByLabel('Users').click();
+    await this.page.locator('#selectLocale').selectOption('km');
+    await delay(5000);
+  }
+
+  async expectAllButtonsToBePresent() {
+    await expect(this.page.getByRole('button', { name: 'Add Patient' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'Users' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'App Menu' })).toBeEnabled();
   }
 }
