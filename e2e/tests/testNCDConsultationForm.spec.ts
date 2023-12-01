@@ -17,7 +17,7 @@ test('NCD Consultation form should load all the form sections', async ({ page })
   await homePage.createPatient();
 
   // reply
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
   const consultationForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
   await expect(consultationForm?.includes('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeTruthy();
@@ -52,7 +52,7 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   await homePage.createPatient();
 
   // reply
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
   const consultationForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
   await expect(consultationForm?.includes('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង')).toBeTruthy();
@@ -61,7 +61,7 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   // verify
   await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
-  await page.getByLabel('បាទ/ចាស').check();
+  await page.getByLabel('បាទ').check();
   await page.locator('#TBSymptomsid span').first().click();
   await page.getByText('បែកញើស').click();
   await page.locator('#Htid').clear();
@@ -115,9 +115,9 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await page.getByLabel('forms').getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
   await page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
@@ -132,9 +132,9 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await page.getByLabel('forms').getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ការ​ពិនិត្យ​រាងកាយ' }).click();
   await page.locator('#leftFootExamid span').first().click();
@@ -144,14 +144,14 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   await page.locator('#rightFootExamid').getByRole('textbox').click();
   await page.getByRole('option', { name: 'ការវះកាត់យកជើងខាងលើជង្គង់ចេញ' }).click();
   await page.locator('#rightFootExamid').getByRole('textbox').click();
-  await page.getByText('រោគសញ្ញាជំងឺសរសៃប្រសាទឈឺ', { exact: true }).click();
+  await page.getByLabel('Options list').getByText('រោគសញ្ញាជំងឺសរសៃប្រសាទឈឺ',{ exact: true }).click();
   await page.locator('#leftEyeExamid').getByRole('textbox').click();
   await page.getByText('ម៉ាគុលឡា អឺដែម៉ា').click();
   await page.locator('#rightEyeExamid').getByRole('textbox').click();
   await page.getByText('ខ្សោយភ្នែក').click();
   await page.locator('#rightEyeExamid').getByRole('textbox').click();
   await page.getByLabel('Options list').getByText('ម៉ាគុលឡា អឺដែម៉ា').click();
-  await page.locator('#rightEyeExamid').getByRole('combobox').click();
+  await page.locator('#rightEyeExamid').getByRole('textbox').click();
   await page.getByRole('option', { name: 'ព្រិលភ្នែក' }).click();
   await page.locator('#uroGenExamid div').first().click();
   await page.getByText('មីក្រូអាល់ប៊ុយមីននុយរី').click();
@@ -170,9 +170,9 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await page.getByLabel('forms').getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
   await page.locator('#Diagnosis1id_3').check();
@@ -188,9 +188,9 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await page.getByLabel('forms').getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ផែនការព្យាបាល' }).click();
   await page.getByLabel('ថ្នាំលេបបញ្ចុះជាតិស្ករ', { exact: true }).check();
@@ -207,12 +207,13 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   }
   await delay(2000);
 
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
-  await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
+  await page.getByLabel('forms').getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'បញ្ជូន', exact: true }).click();
-  await page.locator('#facilityid').selectOption('75768295-02df-47ae-965b-d7e84040194b');
+  await page.locator('input[type="text"]').click();
+  await page.getByText('ក្រចេះ > ឆ្លូង > 100102').click();
   await page.locator('#reasonForReferralid').clear();
   await page.locator('#reasonForReferralid').fill('Scanning the skull');
   await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
@@ -229,7 +230,7 @@ test('NCD Consultation form should compute CVD risk score correctly', async ({ p
   await homePage.createPatient();
 
   // replay
-  await page.locator('div').filter({ hasText: /^ទម្រង់$/ }).getByRole('button').click();
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
   await delay(4000);
 
   const consultationForm = await page.locator('table tbody tr:nth-child(1) td:nth-child(1) a').textContent();
