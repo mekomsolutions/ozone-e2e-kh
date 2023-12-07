@@ -1,4 +1,4 @@
-name: KH E2E Test Environment
+name: KH E2E Tests On Specified Environment
 
 on:
 

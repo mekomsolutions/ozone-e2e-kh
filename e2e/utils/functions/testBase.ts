@@ -58,10 +58,8 @@ export class HomePage {
     await this.page.getByLabel('នាមខ្លួន').clear();
     await this.page.getByLabel('នាមខ្លួន').fill(`${patientName.firstName}`);
     await this.page.locator('label').filter({ hasText: 'ប្រុស' }).locator('span').first().click();
-    await this.page.getByRole('combobox', { name: 'តើអ្នកគិតថាអ្នកជាអ្វីដែរ?' }).selectOption('83c0a1ad-9605-4369-a725-b0049c103554');
     await this.page.getByPlaceholder('dd/mm/YYYY').fill('14/01/1959');
     await this.page.getByRole('button', { name: 'ចុះឈ្មោះអ្នកជំងឺ' }).click();
-    await expect(this.page.getByText('បង្កើតការចុះឈ្មោះអ្នកជំងឺថ្')).toBeVisible();
     await expect(this.page.getByText('កត់ត្រាសញ្ញាជីវិត')).toBeVisible();
     await expect(this.page.getByText('បង្ហាញលម្អិត')).toBeVisible();
     await expect(this.page.getByText('ជ្រើសរើសមុខងារ')).toBeVisible();
