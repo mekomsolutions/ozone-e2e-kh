@@ -74,4 +74,4 @@ The e2e.yml workflow is made up of one job that runs upon _Git pull requests_ an
 
 The runE2ETestsOnProvidedEnv.yml workflow is made up of one job that allows selection of a preferred environment at runtime. Note: You need to select the preferred environment to run the tests.
 
-<img src="readme/user_inputs.png" alt="User Inputs" width="1000"/>
+<img src="readme/user_input.png" alt="User Inputs" width="1000"/>
