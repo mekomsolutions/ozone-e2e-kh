@@ -9,6 +9,16 @@ on:
     branches: [main]
 
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose test environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - uat
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,6 +47,8 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Run E2E tests
+        env:
+          E2E_TEST_ENVIRONMENT: '${{ github.event.inputs.environment }}'
         run: npm run khE2ETests
 
       - name: Upload report

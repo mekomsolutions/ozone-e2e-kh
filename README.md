@@ -70,8 +70,6 @@ e2e
 When writing a new test case, create a spec in `./e2e/tests`
 
 ## GitHub Actions integration
-The e2e.yml workflow is made up of one job that runs upon _Git pull requests_ and the other upon _Git push(es)_.
+The e2e.yml workflow is split into two jobs, one that runs upon _Git pull requests_, and _Git push(es)_. The other runs tests on an environment specified during runtime. The difference between the two is that, the later is run manually via GitHub Actions. Note: When manually running the tests, you need to choose the test environment at runtime.
 
-The runE2ETestsOnProvidedEnv.yml workflow is made up of one job that allows selection of a preferred environment at runtime. Note: You need to select the preferred environment to run the tests.
-
-<img src="readme/user_input.png" alt="User Inputs" width="1000"/>
+<img src="readme/choose_test_environment.png" alt="User Inputs" width="1000"/>

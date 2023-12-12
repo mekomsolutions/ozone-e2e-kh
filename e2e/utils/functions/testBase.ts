@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test';
+import { E2E_BASE_URL } from '../configs/globalSetup';
 
 export var patientName = {
   firstName : '',
@@ -104,15 +105,15 @@ export class HomePage {
     await this.page.getByRole('button', { name: 'Close' }).click();
   }
 
-  async deletePatient(){
-    await this.page.goto(`${process.env.E2E_BASE_URL}/openmrs/admin/patients/index.htm`);
+  async deletePatient() {
+    await this.page.goto(`${E2E_BASE_URL}/openmrs/admin/patients/index.htm`);
     await this.page.getByPlaceholder(' ').type(`${patientFullName}`);
     await this.page.locator('#openmrsSearchTable tbody tr.odd td:nth-child(1)').click();
     await this.page.locator('input[name="voidReason"]').fill('Delete patient created by smoke tests');
     await this.page.getByRole('button', { name: 'Delete Patient', exact: true }).click();
 
     const message = await this.page.locator('//*[@id="patientFormVoided"]').textContent();
-    expect(message?.includes('This patient has been deleted')).toBeTruthy();
+    await expect(message?.includes('This patient has been deleted')).toBeTruthy();
     await this.page.getByRole('link', { name: 'Log out' }).click();
   }
 
@@ -127,7 +128,7 @@ export class HomePage {
     await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
     await this.page.locator('#quitSmokingid').fill('2018');
     await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
-    delay(5000);
+    await delay(5000);
   }
 
   async enterCVDRiskIndicatorsInNCDConsultationForm() {
@@ -141,11 +142,11 @@ export class HomePage {
     await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
     await this.page.locator('#quitSmokingid').fill('2002');
     await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
-    delay(5000);
+    await delay(5000);
   }
 
   async goToLoginLocation() {
-    await this.page.goto(`${process.env.E2E_BASE_URL}`);
+    await this.page.goto(`${E2E_BASE_URL}`);
     await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
     await this.page.locator('button[type="submit"]').click();
     await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
@@ -181,4 +182,5 @@ export class HomePage {
     await expect(this.page.getByRole('button', { name: 'Users' })).toBeEnabled();
     await expect(this.page.getByRole('button', { name: 'App Menu' })).toBeEnabled();
   }
+
 }
