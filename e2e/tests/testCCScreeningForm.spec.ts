@@ -41,6 +41,7 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   const cancerSection = await page.locator('div.tab button:nth-child(5) span').textContent();
   await expect(cancerSection?.includes('ជំងឺមហារីក')).toBeTruthy();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
+  await homePage.deletePatient();
 });
 
 test('CC Screening form should submit user input successfully', async ({ page }) => {
@@ -61,7 +62,7 @@ test('CC Screening form should submit user input successfully', async ({ page })
   await page.getByLabel('បាទ').check();
   await page.getByLabel('តេស្តវីអាយអេ').check();
   await page.getByRole('radio', { name: 'វិជ្ជមាន', exact: true }).check();
-  await page.getByLabel('បានព្យាបាល', { exact: true }).check();
+  await page.getByRole('radio', { name: 'បានព្យាបាល', exact: true }).check();
   await page.locator('#typeOfTreatmentid').clear();
   await page.locator('#typeOfTreatmentid').fill('Injection');
   await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
@@ -89,7 +90,7 @@ test('CC Screening form should submit user input successfully', async ({ page })
   await page.locator('#WOAid').clear();
   await page.locator('#WOAid').fill('6');
   await page.locator('#usingFPid_0').check();
-  await page.getByLabel('កងដាក់់ដៃសម្រាប់ពន្យារកំណើត').check();
+  await page.getByLabel('កងដាក់ក្រោមស្បែក').check();
   await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
   await expect(page.getByText('Tទម្រង់ទិន្នន័យបានបញ្ជូនដោយជោគជ័យ')).toBeVisible();
   if (await page.getByLabel('close notification').first().isVisible()) {
@@ -162,19 +163,17 @@ test('CC Screening form should submit user input successfully', async ({ page })
   await page.locator('label').filter({ hasText: 'សង្ស័យមានមហារីក' }).first().click();
   await page.locator('label').filter({ hasText: 'ទម្រង់ការវះកាត់ដោយការជាសាច់ជុំវិញមាត់ស្បូន' }).click();
   await page.locator('label').filter({ hasText: 'ការព្យាបាលដោយប្រើកាំរស្មី' }).click();
-  await page.getByLabel('៤​ សប្តាហ៍').check();
-  await page.locator('#followUpid_2').check();
-  await page.getByLabel('ដុំំសាច់ដែលមិនមានចលនា').check();
+  await page.locator('#followUpid_0').check();
+  await page.getByLabel('ជំងឺរលាកដោះ').check();
   await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
   await expect(page.getByText('Tទម្រង់ទិន្នន័យបានបញ្ជូនដោយជោគជ័យ')).toBeVisible();
   if (await page.getByLabel('close notification').first().isVisible()) {
     await page.getByTitle('close notification').first().click();
   }
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
+  await homePage.deletePatient();
 });
 
 test.afterEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.deletePatient();
   await page.close();
 });
