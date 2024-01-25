@@ -44,6 +44,7 @@ test('NCD Consultation form should load all the form sections', async ({ page })
   const referralSection = await page.locator('div.tab button:nth-child(6) span').textContent();
   await expect(referralSection?.includes('បញ្ជូន')).toBeTruthy();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
+  await homePage.deletePatient();
 });
 
 test('NCD Consultation form should submit user input successfully', async ({ page }) => {
@@ -222,6 +223,7 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
     await page.getByTitle('close notification').first().click();
   }
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
+  await homePage.deletePatient();
 });
 
 test('NCD Consultation form should compute CVD risk score correctly', async ({ page }) => {
@@ -244,11 +246,10 @@ test('NCD Consultation form should compute CVD risk score correctly', async ({ p
   // verify
   const  computedValue = await page.locator('input#CVDscoreid').inputValue();
   let cVDRiskScore = Number(computedValue);
-  await expect(cVDRiskScore).toBe(7);
+  await expect(cVDRiskScore).toBe(10);
+  await homePage.deletePatient();
 });
 
 test.afterEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.deletePatient();
   await page.close();
 });

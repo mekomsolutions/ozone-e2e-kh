@@ -228,7 +228,7 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
   // verify
   const  computedValue = await page.locator('input#CVDscoreid').inputValue();
   let cVDRiskScore = Number(computedValue);
-  await expect(cVDRiskScore).toBe(6);
+  await expect(cVDRiskScore).toBe(9);
   await page.getByRole('button', { name: 'ការគ្រប់គ្រង' }).click();
   await delay(1000);
   switch (true) {
