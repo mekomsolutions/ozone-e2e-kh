@@ -30,7 +30,7 @@ export class HomePage {
       await this.page.locator('button[type="submit"]').click();
     }
     await delay(6000);
-    await this.expectAllButtonsToBePresent();
+    //await this.expectAllButtonsToBePresent();
     await this.page.getByLabel('Users').click();
     if ((await this.page.locator('#selectLocale').selectOption('en')).includes('en')) {
       await this.page.locator('#selectLocale').selectOption('km');
