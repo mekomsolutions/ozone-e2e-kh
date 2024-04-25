@@ -1,14 +1,17 @@
 {
   "name": "ozone-e2e-kh",
-  "version": "1.0.0",
+  "version": "next",
+  "license": "MPL-2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "khE2ETests": "npx playwright test"
   },
+  "publishConfig": {
+    "registry": "https://nexus.mekomsolutions.net/repository/npm-public/"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.40.0",
     "@types/node": "^20.8.10",
