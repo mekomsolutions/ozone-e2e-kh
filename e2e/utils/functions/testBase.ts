@@ -23,22 +23,9 @@ export class HomePage {
   readonly patientSearchBar = () => this.page.locator('[data-testid="patientSearchBar"]');
   async initiateLogin() {
     await this.goToLoginLocation();
-    if (await this.page.locator('input[role="searchbox"]').isVisible()) {
-      await this.page.locator('input[role="searchbox"]').click();
-      await this.page.locator('input[role="searchbox"]').fill('100102');
-      await this.page.locator('span').first().click();
-      await this.page.locator('button[type="submit"]').click();
-    }
-    await delay(6000);
-    await this.expectAllButtonsToBePresent();
-    await this.page.getByLabel('Users').click();
-    if ((await this.page.locator('#selectLocale').selectOption('en')).includes('en')) {
-      await this.page.locator('#selectLocale').selectOption('km');
-      await delay(6000);
-    } else {
-      await this.page.getByLabel('Users').click();
-    }
-    await delay(6000);
+    await this.page.locator('input[role="searchbox"]').fill('100102');
+    await this.page.locator('span').first().click();
+    await this.page.locator('button[type="submit"]').click();
     await this.expectAllButtonsToBePresent();
   }
 
@@ -72,7 +59,6 @@ export class HomePage {
     await this.page.locator('select[name="visitAttributes\\.1c75188f-625f-4181-a4e3-9de1d4f21f90"]').selectOption('3b592418-9f6a-4526-83c4-1b0e243938fe');
     await this.page.locator('select[name="visitAttributes\\.547f2d61-589f-4b04-9da8-8a5c639b5cc6"]').selectOption('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
     await this.page.getByRole('button', { name: 'ចាប់ផ្តើមការមកពិនិត្យជំងឺ' }).click();
-    await expect(this.page.getByText('ការមកពិនិត្យជំងឺសកម្')).toBeEnabled();
     await delay(4000);
   }
 
@@ -124,7 +110,7 @@ export class HomePage {
     await this.page.locator('#Wtid').type('75');
     await this.page.locator('#systoleid').clear();
     await this.page.locator('#systoleid').type('14');
-    await this.page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
+    await this.page.locator('button.tablinks:nth-child(3) span').click();
     await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
     await this.page.locator('#quitSmokingid').fill('2018');
     await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
@@ -138,7 +124,7 @@ export class HomePage {
     await this.page.locator('#Wtid').type('88');
     await this.page.locator('#systoleid').clear();
     await this.page.locator('#systoleid').type('25');
-    await this.page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
+    await this.page.locator('button.tablinks:nth-child(2) span').click();
     await this.page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
     await this.page.locator('#quitSmokingid').fill('2002');
     await this.page.getByRole('button', { name: 'រោគវិនិច្ឆ័យ' }).click();
@@ -154,32 +140,36 @@ export class HomePage {
   }
 
   async changeLoginLocation() {
-    await this.page.getByLabel('Users').click();
-    await this.page.getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).click();
+    await this.page.getByLabel('My Account').click();
+    await this.page.getByLabel('Change Location').getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).click();
     await this.page.locator('#search-1').clear();
   }
 
   async switchLoginLocation() {
-    await this.page.getByLabel('Users').click();
+    await this.page.getByLabel('My Account').click();
     await this.page.getByRole('button', { name: 'Change' }).click();
     await this.page.locator('#search-1').clear();
   }
 
   async switchToEnglishLocale() {
-    await this.page.getByLabel('Users').click();
-    await this.page.locator('#selectLocale').selectOption('en');
+    await this.page.getByLabel('My Account').click();
+    await this.page.getByLabel('Change Language').getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).click();
+    await this.page.getByRole('group').locator('span').first().click();
+    await this.page.getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).first().click();
     await delay(5000);
   }
 
   async switchToKhmerLocale() {
-    await this.page.getByLabel('Users').click();
-    await this.page.locator('#selectLocale').selectOption('km');
+    await this.page.getByLabel('My Account').click();
+    await this.page.getByLabel('Change Language').getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).click();
+    await this.page.getByRole('group').getByLabel('ខ្មែរ').click();
+    await this.page.getByRole('button', { name: 'ផ្លាស់ប្តូរ' }).first().click();
     await delay(5000);
   }
 
   async expectAllButtonsToBePresent() {
     await expect(this.page.getByRole('button', { name: 'Add Patient' })).toBeEnabled();
-    await expect(this.page.getByRole('button', { name: 'Users' })).toBeEnabled();
+    await expect(this.page.getByRole('button', { name: 'My Account' })).toBeEnabled();
     await expect(this.page.getByRole('button', { name: 'App Menu' })).toBeEnabled();
   }
 

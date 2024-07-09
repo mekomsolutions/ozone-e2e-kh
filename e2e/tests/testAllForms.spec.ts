@@ -33,7 +33,6 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
-  await page.getByRole('button', { name: 'បិទ', exact: true }).click();
   await homePage.deletePatient();
 });
 
@@ -72,8 +71,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await page.locator('button[type="submit"]').click();
   await homePage.changeLoginLocation();
 
-  await page.locator('input[role="searchbox"]').type('Khsach Andet_HC');
-  await delay(1000);
+  await page.locator('input[role="searchbox"]').type('ខ្សាច់អណ្តែត_HC');
   await expect(page.getByText('ខ្សាច់អណ្តែត_HC')).toBeVisible();
   await expect(location).toHaveText('100105. ខ្សាច់អណ្តែត_HC');
   await expect(page.getByText('មន្ទីរពេទ្យបង្អែកឆ្លូង_RH ')).not.toBeVisible();

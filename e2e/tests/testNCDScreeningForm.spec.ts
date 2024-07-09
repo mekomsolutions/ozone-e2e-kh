@@ -89,7 +89,8 @@ test('NCD screening form should submit user input successfully', async ({ page }
   await delay(4000);
   await page.getByLabel('forms').getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
-  await page.getByRole('button', { name: 'ការពិនិត្យវិភាគ' }).click();
+  await page.locator('button.tablinks:nth-child(2) span').click();
+
   await page.locator('#Htid').clear();
   await page.locator('#Htid').fill('168');
   await page.locator('#Wtid').clear();
@@ -222,14 +223,14 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
   await expect(page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង')).toBeVisible();
   await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
-  await page.getByRole('button', { name: 'ការពិនិត្យវិភាគ' }).click();
+  await page.locator('button.tablinks:nth-child(2) span').click();
   await homePage.enterCVDRiskIndicatorsInNCDScreeningForm();
 
   // verify
   const  computedValue = await page.locator('input#CVDscoreid').inputValue();
   let cVDRiskScore = Number(computedValue);
   await expect(cVDRiskScore).toBe(9);
-  await page.getByRole('button', { name: 'ការគ្រប់គ្រង' }).click();
+  await page.locator('button.tablinks:nth-child(6) span').click();
   await delay(1000);
   switch (true) {
     case cVDRiskScore < 20:

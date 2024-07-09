@@ -120,7 +120,7 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
   await delay(4000);
   await page.getByLabel('forms').getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
-  await page.getByRole('button', { name: 'របៀបរស់នៅ' }).click();
+  await page.locator('button.tablinks:nth-child(2) span').click();
   await page.getByLabel('អតីតអ្នកជក់បារី ឬ ធ្លាប់ជក់បារី').check();
   await page.locator('#quitSmokingid').clear();
   await page.locator('#quitSmokingid').fill('2014');
