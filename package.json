@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "khE2ETests": "npx playwright test"
+    "khE2ETests": "npx playwright test MedicalHistory"
   },
   "publishConfig": {
     "registry": "https://nexus.mekomsolutions.net/repository/npm-public/"
