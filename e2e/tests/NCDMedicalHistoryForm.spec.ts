@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../utils/functions/testBase';
-import { delay } from '../utils/functions/testBase';
+import { OpenMRS } from '../utils/functions/openmrs';
+import { delay } from '../utils/functions/openmrs';
 
-let homePage: HomePage;
+let openmrs: OpenMRS;
 
 test.beforeEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.initiateLogin();
+  const openmrs = new OpenMRS(page);
+  await openmrs.login();
 
   await expect(page).toHaveURL(/.*home/);
 });
 
 test('NCD Medical history form should load all form sections', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // reply
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -33,8 +33,8 @@ test('NCD Medical history form should load all form sections', async ({ page }) 
 
 test('NCD Medical history form should submit user input successfully', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // reply
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -60,7 +60,7 @@ test('NCD Medical history form should submit user input successfully', async ({ 
 });
 
 test.afterEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.deletePatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.voidPatient();
   await page.close();
 });

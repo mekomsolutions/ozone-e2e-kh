@@ -1,5 +1,5 @@
 import { Page, expect } from '@playwright/test';
-import { E2E_BASE_URL } from '../configs/globalSetup';
+import { O3_URL } from '../configs/globalSetup';
 
 export var patientName = {
   firstName : '',
@@ -16,12 +16,12 @@ export const delay = (mills) => {
     }
 }
 
-export class HomePage {
+export class OpenMRS {
   constructor(readonly page: Page) {}
 
   readonly patientSearchIcon = () => this.page.locator('[data-testid="searchPatientIcon"]');
   readonly patientSearchBar = () => this.page.locator('[data-testid="patientSearchBar"]');
-  async initiateLogin() {
+  async login() {
     await this.goToLoginLocation();
     await this.page.locator('input[role="searchbox"]').fill('100102');
     await this.page.locator('span').first().click();
@@ -91,8 +91,8 @@ export class HomePage {
     await this.page.getByRole('button', { name: 'Close' }).click();
   }
 
-  async deletePatient() {
-    await this.page.goto(`${E2E_BASE_URL}/openmrs/admin/patients/index.htm`);
+  async voidPatient() {
+    await this.page.goto(`${O3_URL}/openmrs/admin/patients/index.htm`);
     await this.page.getByPlaceholder(' ').type(`${patientFullName}`);
     await this.page.locator('#openmrsSearchTable tbody tr.odd td:nth-child(1)').click();
     await this.page.locator('input[name="voidReason"]').fill('Delete patient created by smoke tests');
@@ -132,10 +132,10 @@ export class HomePage {
   }
 
   async goToLoginLocation() {
-    await this.page.goto(`${E2E_BASE_URL}`);
-    await this.page.locator('#username').fill(`${process.env.E2E_USER_ADMIN_USERNAME}`);
+    await this.page.goto(`${O3_URL}`);
+    await this.page.locator('#username').fill(`${process.env.O3_USERNAME}`);
     await this.page.locator('button[type="submit"]').click();
-    await this.page.locator('#password').fill(`${process.env.E2E_USER_ADMIN_PASSWORD}`);
+    await this.page.locator('#password').fill(`${process.env.O3_PASSWORD}`);
     await this.page.locator('button[type="submit"]').click();
   }
 

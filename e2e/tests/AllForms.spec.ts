@@ -1,17 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../utils/functions/testBase';
-import { delay } from '../utils/functions/testBase';
+import { OpenMRS } from '../utils/functions/openmrs';
+import { delay } from '../utils/functions/openmrs';
 
-let homePage: HomePage;
+let openmrs: OpenMRS;
 
 test('All the forms should load on the patient chart page', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.initiateLogin();
+  const openmrs = new OpenMRS(page);
+  await openmrs.login();
 
   await expect(page).toHaveURL(/.*home/);
 
-  await homePage.createPatient();
+  await openmrs.createPatient();
 
   // replay
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -33,15 +33,15 @@ test('All the forms should load on the patient chart page', async ({ page }) => 
   const medicalHistoryForm = await page.locator('table tbody tr:nth-child(3) td:nth-child(1) a').textContent();
   await expect(medicalHistoryForm?.includes('ប្រវត្តជំងឺ')).toBeTruthy();
   await expect(page.getByText('ប្រវត្តជំងឺ')).toBeVisible();
-  await homePage.deletePatient();
+  await openmrs.voidPatient();
 });
 
 test('Location picker should search locations by entering a numeric value, a Khmer value and an English value from the location code', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
+  const openmrs = new OpenMRS(page);
 
   // reply
-  await homePage.goToLoginLocation();
+  await openmrs.goToLoginLocation();
 
   // verify
   let location = await page.locator('form fieldset div:nth-child(1) label');
@@ -56,7 +56,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('100105')).not.toBeVisible();
   await location.first().click();
   await page.locator('button[type="submit"]').click();
-  await homePage.changeLoginLocation();
+  await openmrs.changeLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('មន្ទីរពេទ្យបង្អែកឆ្លូង_RH');
   await delay(1000);
@@ -69,7 +69,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('ពង្រ_HC')).not.toBeVisible();
   await location.first().click();
   await page.locator('button[type="submit"]').click();
-  await homePage.changeLoginLocation();
+  await openmrs.changeLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('ខ្សាច់អណ្តែត_HC');
   await expect(page.getByText('ខ្សាច់អណ្តែត_HC')).toBeVisible();
@@ -82,8 +82,8 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await location.first().click();
   await page.locator('button[type="submit"]').click();
   await delay(5000);
-  await homePage.switchToEnglishLocale();
-  await homePage.switchLoginLocation();
+  await openmrs.switchToEnglishLocale();
+  await openmrs.switchLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('100103');
   await delay(1000);
@@ -96,7 +96,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('100106')).not.toBeVisible();
   await location.first().click();
   await page.locator('button[type="submit"]').click();
-  await homePage.switchLoginLocation();
+  await openmrs.switchLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('Khsach Andet_HC');
   await delay(1000);
@@ -109,7 +109,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await expect(page.getByText('Pongro_HC')).not.toBeVisible();
   await location.first().click();
   await page.locator('button[type="submit"]').click();
-  await homePage.switchLoginLocation();
+  await openmrs.switchLoginLocation();
 
   await page.locator('input[role="searchbox"]').type('ចំបក់_HC');
   await delay(1000);
@@ -123,7 +123,7 @@ test('Location picker should search locations by entering a numeric value, a Khm
   await location.first().click();
   await page.locator('button[type="submit"]').click();
   await expect(page).toHaveURL(/.*home/);
-  await homePage.switchToKhmerLocale();
+  await openmrs.switchToKhmerLocale();
 });
 
 test.afterEach(async ({ page }) => {
