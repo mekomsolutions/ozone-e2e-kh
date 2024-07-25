@@ -27,7 +27,7 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
   const historyOfCervicalCancerScreeningSection = await page.locator('form button.tablinks.completed.active span').textContent();
-  await expect(historyOfCervicalCancerScreeningSection?.includes('ប្រវត្តិនៃការពិនិត្យជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
+  await expect(historyOfCervicalCancerScreeningSection?.includes('ប្រវត្តិនៃការពិនិត្យសុខភាពមាត់ស្បូនរកមហារីក')).toBeTruthy();
 
   const reproductiveHistorySection = await page.locator('div.tab button:nth-child(2) span').textContent();
   await expect(reproductiveHistorySection?.includes('ប្រវត្តិបន្តពូជ')).toBeTruthy();
@@ -76,7 +76,7 @@ test('CC Screening form should submit user input successfully', async ({ page })
   await delay(4000);
   await page.getByLabel('forms').getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
   await delay(3000);
-  await page.getByRole('button', { name: 'ប្រវត្តិបន្តពូជ' }).click();
+  await page.locator('button.tablinks:nth-child(2) span').click();
   await page.locator('#sexDebutid').click();
   await page.locator('#sexDebutid').fill('18');
   await page.locator('#previousPregnancyid_0').check();
