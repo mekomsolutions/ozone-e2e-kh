@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../utils/functions/testBase';
-import { delay } from '../utils/functions/testBase';
+import { OpenMRS } from '../utils/functions/openmrs';
+import { delay } from '../utils/functions/openmrs';
 
-let homePage: HomePage;
+let openmrs: OpenMRS;
 
 test.beforeEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.initiateLogin();
+  const openmrs = new OpenMRS(page);
+  await openmrs.login();
 
   await expect(page).toHaveURL(/.*home/);
 });
 
 test('NCD Consultation form should load all the form sections', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // reply
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -44,13 +44,13 @@ test('NCD Consultation form should load all the form sections', async ({ page })
   const referralSection = await page.locator('div.tab button:nth-child(6) span').textContent();
   await expect(referralSection?.includes('បញ្ជូន')).toBeTruthy();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
-  await homePage.deletePatient();
+  await openmrs.voidPatient();
 });
 
 test('NCD Consultation form should submit user input successfully', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // reply
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -223,13 +223,13 @@ test('NCD Consultation form should submit user input successfully', async ({ pag
     await page.getByTitle('close notification').first().click();
   }
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
-  await homePage.deletePatient();
+  await openmrs.voidPatient();
 });
 
 test('NCD Consultation form should compute CVD risk score correctly', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // replay
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -241,13 +241,13 @@ test('NCD Consultation form should compute CVD risk score correctly', async ({ p
   await page.getByText('ការពិគ្រោះយោបល់ជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.getByRole('button', { name: 'ការវាយតម្លៃវេជ្ជសាស្រ្ត' }).click();
-  await homePage.enterCVDRiskIndicatorsInNCDConsultationForm();
+  await openmrs.enterCVDRiskIndicatorsInNCDConsultationForm();
 
   // verify
   const  computedValue = await page.locator('input#CVDscoreid').inputValue();
   let cVDRiskScore = Number(computedValue);
   await expect(cVDRiskScore).toBe(10);
-  await homePage.deletePatient();
+  await openmrs.voidPatient();
 });
 
 test.afterEach(async ({ page }) => {

@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../utils/functions/testBase';
-import { delay } from '../utils/functions/testBase';
+import { OpenMRS } from '../utils/functions/openmrs';
+import { delay } from '../utils/functions/openmrs';
 
-let homePage: HomePage;
+let openmrs: OpenMRS;
 
 test.beforeEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.initiateLogin();
+  const openmrs = new OpenMRS(page);
+  await openmrs.login();
 
   await expect(page).toHaveURL(/.*home/);
 });
 
 test('CC Screening form should load all the form sections', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // replay
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -41,13 +41,13 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   const cancerSection = await page.locator('div.tab button:nth-child(5) span').textContent();
   await expect(cancerSection?.includes('ជំងឺមហារីក')).toBeTruthy();
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
-  await homePage.deletePatient();
+  await openmrs.voidPatient();
 });
 
 test('CC Screening form should submit user input successfully', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // reply
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -171,7 +171,7 @@ test('CC Screening form should submit user input successfully', async ({ page })
     await page.getByTitle('close notification').first().click();
   }
   await page.getByRole('button', { name: 'បិទ', exact: true }).click();
-  await homePage.deletePatient();
+  await openmrs.voidPatient();
 });
 
 test.afterEach(async ({ page }) => {

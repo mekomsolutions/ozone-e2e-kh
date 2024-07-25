@@ -1,20 +1,20 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../utils/functions/testBase';
-import { delay } from '../utils/functions/testBase';
+import { OpenMRS } from '../utils/functions/openmrs';
+import { delay } from '../utils/functions/openmrs';
 
-let homePage: HomePage;
+let openmrs: OpenMRS;
 
 test.beforeEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.initiateLogin();
+  const openmrs = new OpenMRS(page);
+  await openmrs.login();
 
   await expect(page).toHaveURL(/.*home/);
 });
 
 test('NCD Screening form should load all the form sections', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // replay
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -48,8 +48,8 @@ test('NCD Screening form should load all the form sections', async ({ page }) =>
 
 test('NCD screening form should submit user input successfully', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // reply
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -211,8 +211,8 @@ test('NCD screening form should submit user input successfully', async ({ page }
 
 test('NCD screening form should compute CVD risk score correctly', async ({ page }) => {
   // setup
-  const homePage = new HomePage(page);
-  await homePage.createPatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
 
   // replay
   await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
@@ -224,7 +224,7 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
   await page.getByText('ពិនិត្យរកជំងឺមិនឆ្លង').click();
   await delay(3000);
   await page.locator('button.tablinks:nth-child(2) span').click();
-  await homePage.enterCVDRiskIndicatorsInNCDScreeningForm();
+  await openmrs.enterCVDRiskIndicatorsInNCDScreeningForm();
 
   // verify
   const  computedValue = await page.locator('input#CVDscoreid').inputValue();
@@ -246,7 +246,7 @@ test('NCD screening form should compute CVD risk score correctly', async ({ page
 });
 
 test.afterEach(async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.deletePatient();
+  const openmrs = new OpenMRS(page);
+  await openmrs.voidPatient();
   await page.close();
 });
