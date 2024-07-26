@@ -19,7 +19,7 @@ jobs:
           registry-url: 'https://nexus.mekomsolutions.net/repository/npm-public/'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install -g yarn
 
       - name: Publish to NPM repository
         run: yarn publish
