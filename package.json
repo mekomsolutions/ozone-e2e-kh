@@ -2,8 +2,15 @@
   "name": "ozone-e2e-kh",
   "version": "next",
   "license": "MPL-2.0",
-  "description": "",
   "main": "index.js",
+  "files": [
+    "**/*",
+    "!**/.git*/",
+    "!*.gitignore",
+    "!node_modules/",
+    "!test-results/",
+    "!playwright-report/"
+  ],
   "scripts": {
     "e2e-tests-kh": "npx playwright test"
   },
