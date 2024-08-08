@@ -44,6 +44,34 @@ test('CC Screening form should load all the form sections', async ({ page }) => 
   await openmrs.voidPatient();
 });
 
+test('CC Screening form should save user inputs even if the encounter time is after the current time.', async ({ page }) => {
+  // setup
+  await page.clock.fastForward('00:01'); // Advances the time by 1 minute
+  const openmrs = new OpenMRS(page);
+  await openmrs.createPatient();
+
+  // reply
+  await page.getByLabel('ទម្រង់វេជ្ជសាស្ត្រ').click();
+  await delay(3000);
+  const ccScreeningForm = await page.locator('table tbody tr:nth-child(2) td:nth-child(1) a').textContent();
+  await expect(ccScreeningForm?.includes('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeTruthy();
+  await expect(page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន')).toBeVisible();
+  await page.getByText('ការពិនិត្យស្រាវជ្រាវរកជំងឺមហារីកមាត់ស្បូន').click();
+  await delay(2000);
+
+  // verify
+  await page.getByRole('button', { name: 'ជំងឺមហារីក' }).click();
+  await page.locator('#breastCancerEducid_0').check();
+  await page.locator('#breastExamid_0').check();
+  await page.locator('#breastCancerTreatmentid').getByRole('textbox').click();
+  await page.getByText('ការព្យាបាលដោយឳសថ').click();
+  await page.getByRole('button', { name: 'រក្សាទុក និងបិទ' }).click();
+  await expect(page.getByText('Tទម្រង់ទិន្នន័យបានបញ្ជូនដោយជោគជ័យ')).toBeVisible();
+  await expect(page.getByText('error')).not.toBeVisible();
+  await expect(page.getByText('The encounter datetime should be before the current date.')).not.toBeVisible();
+  await openmrs.voidPatient();
+});
+
 test('CC Screening form should submit user input successfully', async ({ page }) => {
   // setup
   const openmrs = new OpenMRS(page);
